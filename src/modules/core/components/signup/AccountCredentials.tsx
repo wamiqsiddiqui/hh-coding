@@ -76,7 +76,7 @@ const AccountCredentials = ({
               isOptional={false}
               options={[
                 { name: "Select Security Question", id: "" },
-                ...securityQuestions.data.map((question) => {
+                ...securityQuestions.data.data.map((question) => {
                   return { name: question.label, id: question.value };
                 }),
               ]}

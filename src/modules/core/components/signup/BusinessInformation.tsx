@@ -130,7 +130,7 @@ PersonalInfoProps) => {
               isOptional={false}
               options={[
                 { name: "Select Business Category", id: "" },
-                ...businessCategories.data.map((category) => {
+                ...businessCategories.data.data.map((category) => {
                   return { name: category.label, id: category.value };
                 }),
               ]}

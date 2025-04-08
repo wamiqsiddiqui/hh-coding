@@ -12,10 +12,9 @@ export const getAllBusinessCategories = async (
       ? `size=9&page=${pageParam ?? 1}`
       : "nopaging=true";
   const searchParam = hasSearched ? `&title=${search}` : "";
-  const { data } = await axiosInstance.get<BusinessCategoriesListingType>(
+  return await axiosInstance.get<BusinessCategoriesListingType>(
     `${GET_ROUTES.getAllBusinessCategories}?${pagingParam}${searchParam}`
   );
-  return data;
 };
 
 export const getAllSecurityQuestions = async (
@@ -28,8 +27,7 @@ export const getAllSecurityQuestions = async (
       ? `size=9&page=${pageParam ?? 1}`
       : "nopaging=true";
   const searchParam = hasSearched ? `&title=${search}` : "";
-  const { data } = await axiosInstance.get<BusinessCategoriesListingType>(
+  return await axiosInstance.get<BusinessCategoriesListingType>(
     `${GET_ROUTES.getAllSecurityQuestions}?${pagingParam}${searchParam}`
   );
-  return data;
 };
