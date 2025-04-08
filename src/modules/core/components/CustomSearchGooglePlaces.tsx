@@ -42,7 +42,7 @@ const CustomSearchGooglePlaces = () => {
               </p>
               <div
                 className={`flex items-center bg-white h-max border-[1px] shadow-input-field-light border-hhGrayShades-borderGray mb-4 p-2
-               w-full rounded-lg`}
+               w-full rounded-lg flex-row`}
               >
                 <p className="text-text-black text-xs text-start">
                   {searchText}
