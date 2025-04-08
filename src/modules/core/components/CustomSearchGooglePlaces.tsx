@@ -15,7 +15,7 @@ import { LocationSvgs } from "../../../utils/svgIcons";
 
 const CustomSearchGooglePlaces = () => {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyBwgtDTFQB5MD6foQLlDIuXnzZYZf5YvpI",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_PLACES_API_KEY ?? "",
     libraries: GOOGLE_PLACES_LIBRARIES as Libraries | undefined,
   });
   //**places.js:50 As of March 1st, 2025, google.maps.places.Autocomplete is not available to new customers. Please use google.maps.places.PlaceAutocompleteElement instead. At this time, google.maps.places.Autocomplete is not scheduled to be discontinued, but google.maps.places.PlaceAutocompleteElement is recommended over google.maps.places.Autocomplete. While google.maps.places.Autocomplete will continue to receive bug fixes for any major regressions, existing bugs in google.maps.places.Autocomplete will not be addressed. At least 12 months notice will be given before support is discontinued. Please see https://developers.google.com/maps/legacy for additional details and https://developers.google.com/maps/documentation/javascript/places-migration-overview for the migration guide. */
