@@ -4,7 +4,7 @@ export const KEY_NAMES = {
   merchantId: "merchantId",
   refreshToken: "refreshToken",
   rememberMe: "rememberMe",
-  email: "email",
+  emailAddress: "emailAddress",
   password: "password",
 };
 

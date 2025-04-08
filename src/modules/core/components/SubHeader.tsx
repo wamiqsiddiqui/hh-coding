@@ -1,19 +1,30 @@
 import { useSelector } from "react-redux";
-import { EnglishFlagSvg, HappyHourLogoSvg } from "../../../utils/svgIcons";
+import {
+  ArabicFlagSvg,
+  EnglishFlagSvg,
+  HappyHourLogoSvg,
+} from "../../../utils/svgIcons";
 import DropdownSelectOnly from "./DropdownSelectOnly";
 import { RootState } from "../../../redux/store";
 import useRTL from "../../../utils/languageHelpers";
 import { useTranslation } from "react-i18next";
 
-const SubHeader = () => {
+type SubHeaderProps = {
+  noPadding?: boolean;
+};
+const SubHeader = ({ noPadding }: SubHeaderProps) => {
   const { t } = useTranslation();
   const { language: lang } = useSelector(
     (state: RootState) => state.centeralizedStateData.user
   );
   const { handleLangChange } = useRTL();
   return (
-    <div className="flex w-full justify-between mt-4 px-4">
-      <HappyHourLogoSvg />
+    <div
+      className={`flex w-full ${
+        !noPadding ? "px-4 justify-between mt-4" : "justify-end mb-4"
+      }`}
+    >
+      {!noPadding && <HappyHourLogoSvg />}
       <DropdownSelectOnly
         onSelect={() => {
           handleLangChange();
@@ -22,9 +33,9 @@ const SubHeader = () => {
         options={[
           lang === "ar"
             ? { label: t("english"), value: "en", img: <EnglishFlagSvg /> }
-            : { label: t("arabic"), value: "ar", img: <EnglishFlagSvg /> },
+            : { label: t("arabic"), value: "ar", img: <ArabicFlagSvg /> },
         ]}
-        img={<EnglishFlagSvg />}
+        img={lang === "ar" ? <ArabicFlagSvg /> : <EnglishFlagSvg />}
       />
     </div>
   );

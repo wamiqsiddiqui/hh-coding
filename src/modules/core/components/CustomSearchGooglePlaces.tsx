@@ -36,12 +36,12 @@ const CustomSearchGooglePlaces = () => {
       ) : (
         <div className="flex flex-row items-center max-md:flex-col">
           {center !== undefined ? (
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col w-full items-start">
               <p className={`text-sm font-normal text-hhGrayShades-label mb-2`}>
                 Search an Address
               </p>
               <div
-                className={`flex items-center bg-white h-max border-[1px] shadow-input-field-light border-hhGrayShades-borderGray mb-4 p-2
+                className={`flex items-center justify-between bg-white h-max border-[1px] shadow-input-field-light border-hhGrayShades-borderGray mb-4 p-2
                w-full rounded-lg flex-row`}
               >
                 <p className="text-text-black text-xs text-start">

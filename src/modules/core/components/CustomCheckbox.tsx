@@ -84,7 +84,7 @@ const CustomCheckbox = ({
               : size === "medium"
               ? "text-base"
               : "text-sm"
-          } text-text-black text-start`}
+          } text-hhGrayShades-tabHeader font-medium text-start`}
         >
           {checkboxText}{" "}
           {linkText && link && (
