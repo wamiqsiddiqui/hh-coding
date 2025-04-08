@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Happy Hour App",
+  "name": "Service Provider Portal - Happy Hour App",
+  "description": "A web application for managing happy hour events and promotions.",
   "icons": [
     {
       "src": "favicon.ico",

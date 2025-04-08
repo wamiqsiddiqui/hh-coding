@@ -1,3 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ws__icon {
+  @apply p-2 h-10 w-10 text-black;
+}
+
 .App {
   text-align: center;
 }
