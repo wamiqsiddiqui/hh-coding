@@ -20,6 +20,8 @@ module.exports = {
         //               |   └─────────────────────────────── Y offset (moves shadow 2px down)
         //               └───────────────────────────────────── X offset (no horizontal movement)
         "input-field-light": "0px 1px 2px 0px rgba(0, 0, 0, 0.3)",
+        "dropdown-field-light": "0px 2px 4px 0px rgba(0, 0, 0, 0.15)",
+        "dropdown-field": "0px 1px 2px 0px rgba(0, 0, 0, 0.3)",
         div: "0 20rem 60rem 10rem rgba(0, 0, 0, 0.1)",
         tableHeader: "0rem 2rem 20rem 0rem rgba(0,0,0,0.08)",
         header: "0 0.2rem 1rem 0.2rem rgba(0,0,0,0.2)",
@@ -44,6 +46,7 @@ module.exports = {
       colors: {
         "custom-green": "#ED1A5C", // Green color
         "secondary-green": "#FFC6D8",
+        "tertiary-color": "#FFF6FA",
         "dark-green": "#479e3c",
         textBoxGreen: "#58B031",
         "custom-light-green": "#F6FCF3",

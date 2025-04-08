@@ -31,7 +31,7 @@ const DropdownSelectOnly = ({
       <div className="relative">
         <div
           onClick={() => setOpen(!isOpen)}
-          className="flex rounded-lg border-2 py-1 px-2 items-center border-hhGrayShades-borderGray bg-white cursor-pointer gap-x-2"
+          className="flex rounded-lg border-[1px] py-1 px-2 items-center border-hhGrayShades-borderGray shadow-dropdown-field-light bg-white cursor-pointer gap-x-2"
         >
           {img && <span>{img}</span>}
           <p>{selectedLabel ?? options[0].label}</p>

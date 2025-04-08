@@ -20,7 +20,7 @@ const CoreLayout = ({ children }: CoreLayoutProps) => {
         onScroll={(event: React.UIEvent<HTMLDivElement, UIEvent>) =>
           onScroll && onScroll(event)
         }
-        className={`bg-secondary-green ${
+        className={`bg-tertiary-color ${
           location.pathname.includes("login")
             ? "overflow-hidden"
             : "overflow-auto"
