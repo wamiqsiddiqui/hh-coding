@@ -6,7 +6,7 @@ const ComingSoon = ({ height }: { height?: string }) => {
       }  bg-white text-custom-black flex flex-col items-center justify-center`}
     >
       <h1 className="text-5xl text-custom-green font-bold mb-8 animate-pulse">
-        Coming Soon
+        Coming Soooooooooooooooooooooooon
       </h1>
       <p className="text-custom-black text-lg mb-8 font-semibold">
         {`We're working hard to bring you something amazing. Stay tuned!`}

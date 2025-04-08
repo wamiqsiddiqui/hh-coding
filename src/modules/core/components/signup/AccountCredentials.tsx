@@ -96,7 +96,7 @@ const AccountCredentials = ({
             checkboxText={
               "You agree to our Terms of Use, Scan Fee Commission, and Service Commitments, and commit to providing genuine, time-limited offers as per the agreement."
             }
-            linkText="Wesell Terms of Service"
+            linkText="Terms of Service"
             link={() => navigate(PARENT_ROUTES.commingSoon)}
             isChecked={values.terms}
             errorText={checkError ? "Please accept terms and conditions" : ""}
