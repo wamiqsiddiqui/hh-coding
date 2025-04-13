@@ -149,7 +149,7 @@ const DocumentUploader = <T,>({
             {...getRootProps()}
             className={`flex w-full flex-col rounded-md justify-center items-center h-32 border-dashed border-2 ${
               isDragActive
-                ? "border-secondary-green"
+                ? "border-secondary-color"
                 : "border-grayShades-bgTooltip"
             } py-3 ${isDragActive && "bg-grayShades-disabledGray"}`}
           >
@@ -166,7 +166,7 @@ const DocumentUploader = <T,>({
             ) : (
               <div className="flex items-center gap-1 px-2">
                 <p className="text-text-black text-xs sm:text-base font-medium">
-                  <span className="text-secondary-green text-xs sm:text-base font-medium">
+                  <span className="text-secondary-color text-xs sm:text-base font-medium">
                     {t("uploadFile")} &nbsp;
                   </span>
                   {t("orDirectlyDragAndDropHere")}
@@ -186,7 +186,7 @@ const DocumentUploader = <T,>({
           <div
             {...getRootProps()}
             className={`flex items-center p-2 cursor-pointer justify-between
-                 h-10 border-[1px] shadow-input-field-light border-hhGrayShades-borderGray focus-within:border-custom-green w-full rounded-lg ${
+                 h-11 border-[1px] shadow-input-field-light border-hhGrayShades-borderGray focus-within:border-black w-full rounded-lg ${
                    isDragActive ? "bg-grayShades-disabledGray" : "bg-white"
                  }`}
           >
@@ -203,7 +203,7 @@ const DocumentUploader = <T,>({
               </p>
             ) : (
               <p className="text-sm font-normal text-hhGrayShades-label">
-                <span className="text-custom-green text-sm font-normal">
+                <span className="text-primary-color text-sm font-normal">
                   {t("uploadFile")}&nbsp;
                 </span>
                 {t("orDirectlyDragAndDropHere")}

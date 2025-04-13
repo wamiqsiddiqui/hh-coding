@@ -29,7 +29,7 @@ const TabHeader = ({
         <p
           className={`flex-[3] text-xl pt-2 pb-1 ${
             isSelected
-              ? "text-custom-green font-bold"
+              ? "text-primary-color font-bold"
               : " text-hhGrayShades-tabHeader font-medium"
           }`}
         >
@@ -39,7 +39,7 @@ const TabHeader = ({
         {chipText && (
           <p
             className={`${
-              isSelected ? "bg-secondary-green" : " bg-grayShades-customGray"
+              isSelected ? "bg-secondary-color" : " bg-grayShades-customGray"
             } rounded-[4px] px-1 text-white font-semibold text-base h-min`}
           >
             {chipText}
@@ -49,7 +49,7 @@ const TabHeader = ({
       <div
         className={`${
           isSelected ? "w-full" : "w-0"
-        } transition-[width] h-[4px] bg-custom-green`}
+        } transition-[width] h-[4px] bg-primary-color`}
       ></div>
     </div>
   );

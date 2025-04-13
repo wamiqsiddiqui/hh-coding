@@ -31,9 +31,9 @@ const Toast = () => {
       }`}
     >
       {variant === "success" ? (
-        <FaCheckCircle className="ws__icon-white" />
+        <FaCheckCircle className="hh__icon-white" />
       ) : (
-        <PiWarningDiamondFill className="ws__icon-white" />
+        <PiWarningDiamondFill className="hh__icon-white" />
       )}
       <div className="flex items-start py-4 flex-col mr-3">
         <h6 className="text-white my-2 font-semibold">

@@ -10,7 +10,7 @@ export const LoaderCircle = ({
   rightBorder = "border-r-[3px]",
 }: LoaderProps) => (
   <div
-    className={`rounded-[50%] ${size} ml-2 bg-transparent border-transparent ${topBorder} ${rightBorder} border-r-custom-green border-t-custom-green animate-spin`}
+    className={`rounded-[50%] ${size} ml-2 bg-transparent border-transparent ${topBorder} ${rightBorder} border-r-primary-color border-t-primary-color animate-spin`}
   />
 );
 const Loader = ({ className, ...rest }: LoaderProps) => {

@@ -19,11 +19,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
 import { t } from "i18next";
 type AccountCredentialsProps = {
-  fieldNames: SignupFieldNames[];
-  setSelectedSection: Dispatch<SetStateAction<number>>;
-  isPending: boolean;
   selectedSection: number;
-  email?: string;
   checkError: boolean;
   setCheckError?: Dispatch<SetStateAction<boolean>>;
 };
@@ -89,21 +85,21 @@ const AccountCredentials = ({
               <span>
                 {t("youAgreeToOur")}
                 <span
-                  className="text-secondary-green underline"
+                  className="text-secondary-color underline"
                   onClick={() => navigate(PARENT_ROUTES.commingSoon)}
                 >
                   {t("termsOfUse")}
                 </span>
                 ,{" "}
                 <span
-                  className="text-secondary-green underline"
+                  className="text-secondary-color underline"
                   onClick={() => navigate(PARENT_ROUTES.commingSoon)}
                 >
                   {t("scanFeeCommission")}
                 </span>
                 , {t("and")}{" "}
                 <span
-                  className="text-secondary-green underline"
+                  className="text-secondary-color underline"
                   onClick={() => navigate(PARENT_ROUTES.commingSoon)}
                 >
                   {t("serviceCommitments")}

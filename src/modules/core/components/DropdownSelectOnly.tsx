@@ -47,7 +47,7 @@ const DropdownSelectOnly = ({
                   onMouseEnter={() => setFocusedIndex(index)}
                   key={option.value}
                   className={`rounded-md w-full py-1 px-2 flex items-center cursor-pointer ${
-                    isFocused && "bg-secondary-green"
+                    isFocused && "bg-secondary-color"
                   }`}
                   onClick={() => {
                     onSelect(option);

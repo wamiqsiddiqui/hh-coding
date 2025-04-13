@@ -40,8 +40,8 @@ type CustomButtonProps = {
   className?: string;
   secondaryText?: string;
   primaryBg?:
-    | "bg-custom-green border-custom-green border-2 hover:bg-secondary-green"
-    | "bg-transparent hover:bg-badge-green hover:border-custom-green border-2 border-transparent";
+    | "bg-primary-color border-primary-color hover:border-dark-primary border-2 hover:bg-dark-primary"
+    | "bg-transparent hover:bg-badge-green hover:border-primary-color border-2 border-transparent";
 };
 const CustomButton = ({
   text,
@@ -56,7 +56,7 @@ const CustomButton = ({
   textVariant = "green",
   type = "button",
   variant = "primary",
-  primaryBg = "bg-custom-green border-custom-green border-2 hover:bg-secondary-green",
+  primaryBg = "bg-primary-color border-primary-color hover:border-dark-primary border-2 hover:bg-dark-primary",
   size = "large",
   fontSize = "large",
   fontFamily = "",
@@ -108,7 +108,7 @@ const CustomButton = ({
                   : variant === "text"
                   ? `${size === "large" && "mt-2 mb-1 "} bg-transparent ${
                       !noHover && "hover:bg-grayShades-secondaryHoverGray"
-                    } ${textColor ? textColor : "text-custom-green"}`
+                    } ${textColor ? textColor : "text-primary-color"}`
                   : ""
               }`
         } rounded-lg ${
@@ -147,8 +147,8 @@ const CustomButton = ({
               : variant === "primary"
               ? `${
                   primaryBg ===
-                  "bg-transparent hover:bg-badge-green hover:border-custom-green border-2 border-transparent"
-                    ? "text-grayShades-customGray hover:text-custom-green"
+                  "bg-transparent hover:bg-badge-green hover:border-primary-color border-2 border-transparent"
+                    ? "text-grayShades-customGray hover:text-primary-color"
                     : "text-white"
                 } font-light ${
                   fontSize === "small"
@@ -192,9 +192,9 @@ const CustomButton = ({
               : variant === "text"
               ? `${textUnderline && "underline"} ${
                   textVariant === "green"
-                    ? `text-custom-green ${
+                    ? `text-primary-color ${
                         !noHoverScale &&
-                        "hover:text-custom-green hover:font-medium"
+                        "hover:text-primary-color hover:font-medium"
                       }`
                     : textVariant === "red"
                     ? "text-errorSecondary"

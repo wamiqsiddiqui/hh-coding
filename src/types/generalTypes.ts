@@ -19,7 +19,7 @@ export type ColumnsType = {
   columnsSpan?: boolean;
   textStart?: boolean;
   sortKey?: string;
-  textColor?: "text-custom-green" | "text-text-black";
+  textColor?: "text-primary-color" | "text-text-black";
 }[];
 
 export type ChipColorVariant = "blue" | "green" | "gray" | "gold";
@@ -280,6 +280,7 @@ export type HeightType =
   | "h-8"
   | "h-9"
   | "h-10"
+  | "h-11"
   | "h-12"
   | "h-14"
   | "h-16"

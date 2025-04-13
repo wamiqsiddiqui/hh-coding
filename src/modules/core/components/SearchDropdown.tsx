@@ -166,7 +166,7 @@ const SearchDropdown = ({
         </div>
       )}
       <div
-        className={`flex items-center h-10 border-[1px] border-grayShades-datagrid focus-within:border-custom-green bg-white w-full rounded-lg`}
+        className={`flex items-center h-11 border-[1px] border-grayShades-datagrid focus-within:border-black bg-white w-full rounded-lg`}
       >
         <input
           onKeyDown={(e) => {
@@ -300,7 +300,7 @@ const SearchDropdown = ({
             mr="mr-4"
             onClick={() => setOpen(!isOpen)}
             rotate={isOpen ? "rotate-0" : "rotate-180"}
-            customIconColor={isOpen ? "text-custom-green" : undefined}
+            customIconColor={isOpen ? "text-primary-color" : undefined}
             icon={<IoIosArrowUp />}
           />
         )}
@@ -339,7 +339,7 @@ const SearchDropdown = ({
               focusedIndex === 0
                 ? "border-t-[0px] border-x-[1px] border-b-[1px]"
                 : "border-[1px]"
-            } border-custom-green rounded-lg`}
+            } border-primary-color rounded-lg`}
           >
             {isMultiselect && options && options.length > 0 ? (
               filterDd(tags.map((x) => x.id)).length > 0 ? (
@@ -363,12 +363,12 @@ const SearchDropdown = ({
                       className={`w-full px-4 rounded-lg ${
                         index === 0 &&
                         focusedIndex === 0 &&
-                        "border-t-[1px] border-t-custom-green"
+                        "border-t-[1px] border-t-primary-color"
                       } ${
                         index === filterDd(tags.map((x) => x.id)).length - 1 &&
                         focusedIndex ===
                           filterDd(tags.map((x) => x.id)).length - 1 &&
-                        "border-b-[1px] border-b-custom-green"
+                        "border-b-[1px] border-b-primary-color"
                       } py-2 ${
                         isFocused && "bg-custom-light-green"
                       } cursor-pointer`}
@@ -386,7 +386,8 @@ const SearchDropdown = ({
               ) : (
                 <div
                   className={`w-full px-4 rounded-lg ${
-                    focusedIndex === 0 && "border-t-[1px] border-t-custom-green"
+                    focusedIndex === 0 &&
+                    "border-t-[1px] border-t-primary-color"
                   }`}
                 >
                   <p className="ml-5 py-2 text-start text-sm text-grayShades-bgTooltip">
@@ -415,7 +416,7 @@ const SearchDropdown = ({
                     className={`w-full px-4 rounded-lg ${
                       index === 0 &&
                       focusedIndex === 0 &&
-                      "border-t-[1px] border-t-custom-green"
+                      "border-t-[1px] border-t-primary-color"
                     } ${index === 0 ? "py-2" : "py-2"} cursor-pointer ${
                       isFocused && "bg-custom-light-green"
                     }`}

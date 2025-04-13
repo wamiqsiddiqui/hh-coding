@@ -108,7 +108,7 @@ const TagSearchDropdown = ({
         {tags.length > 0 && (
           <div className="flex flex-wrap w-full px-2 py-2">
             {tags.map((tag, index) => (
-              <div className="mr-2 flex justify-center items-center h-10 overflow-clip py-1 mb-2 px-2 w-max  bg-badge-green border-badge-border-green border-2 rounded-lg">
+              <div className="mr-2 flex justify-center items-center h-11 overflow-clip py-1 mb-2 px-2 w-max  bg-badge-green border-badge-border-green border-2 rounded-lg">
                 <p className="text-badge-text-green text-sm font-medium mr-2">
                   {tag}
                 </p>

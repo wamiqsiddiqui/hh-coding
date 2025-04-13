@@ -14,12 +14,7 @@ import { useTranslation } from "react-i18next";
 type LegalDetailsProps = {
   fieldNames: SignupFieldNames[];
   setSelectedSection: Dispatch<SetStateAction<number>>;
-  type: string;
-  isPending: boolean;
   selectedSection: number;
-  email?: string;
-  checkError: boolean;
-  setCheckError?: Dispatch<SetStateAction<boolean>>;
 };
 const LegalDetails = ({
   setSelectedSection,

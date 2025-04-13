@@ -12,7 +12,7 @@ const CustomChip = ({ text, chipColorVariant = "green" }: ChipProps) => {
     <span
       className={`flex justify-center py-2 px-4 w-max rounded-full ${
         chipColorVariant === "green"
-          ? "bg-secondary-green"
+          ? "bg-secondary-color"
           : chipColorVariant === "blue"
           ? "bg-chipBgBlue border-chipBorderBlue"
           : chipColorVariant === "gold"
@@ -23,7 +23,7 @@ const CustomChip = ({ text, chipColorVariant = "green" }: ChipProps) => {
       <p
         className={`${
           chipColorVariant === "green"
-            ? "text-custom-green"
+            ? "text-primary-color"
             : chipColorVariant === "blue"
             ? "text-chipTextBlue"
             : chipColorVariant === "gold"

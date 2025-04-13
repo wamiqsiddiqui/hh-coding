@@ -22,7 +22,7 @@ const IconHeadingBox = ({
   return (
     <div
       onClick={onClick && onClick}
-      className={`flex flex-col  rounded-lg cursor-pointer hover:scale-[1.005] hover:border-secondary-green border-gray-500 border-[1px] ${
+      className={`flex flex-col  rounded-lg cursor-pointer hover:scale-[1.005] hover:border-secondary-color border-gray-500 border-[1px] ${
         sizeVariant === "large" ? "p-1" : "px-8 py-6"
       } max-md:py-4 max-md:px-2 flex-1 w-60`}
     >

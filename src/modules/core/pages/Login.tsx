@@ -26,6 +26,7 @@ import { useHeight } from "../../../utils/hooks";
 import { jwtDecode } from "jwt-decode";
 import { jwtPayload } from "../../../types/generalTypes";
 import { useTranslation } from "react-i18next";
+import Loader from "../components/Loader";
 
 type TLogin = {
   email: string;
@@ -36,6 +37,7 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const initialValues: TLogin = {
     email: Cookies.get(KEY_NAMES.emailAddress) ?? "",
     password: descryptPassword(Cookies.get(KEY_NAMES.password) ?? "") ?? "",
@@ -56,6 +58,7 @@ export default function LoginPage() {
       Cookies.set(KEY_NAMES.password, "");
     }
     try {
+      setLoading(true);
       const response = await axiosInstance.post<{ data: TLoginResponse }>(
         "/user/auth/login",
         {
@@ -63,6 +66,7 @@ export default function LoginPage() {
           password: values.password,
         }
       );
+      setLoading(false);
       const accessToken = response.data.data.authToken;
       const decodedAuthToken = jwtDecode<jwtPayload>(accessToken);
       const decodedRefreshToken = jwtDecode<jwtPayload>(
@@ -86,6 +90,7 @@ export default function LoginPage() {
       );
       navigate(PARENT_ROUTES.serviceProvider);
     } catch (error) {
+      setLoading(false);
       if (error instanceof AxiosError) {
         dispatch(
           setToast({
@@ -119,6 +124,7 @@ export default function LoginPage() {
           : "justify-center  md:overflow-y-auto  max-md:overflow-hidden"
       } text-custom-black relative w-full`}
     >
+      {isLoading && <Loader />}
       <div
         className={`bg-custom-white md:shadow-md portrait:p-12 landscape:px-7 landscape:py-6 landscape:max-md:rounded-none rounded-xl w-full sm:w-[562px] xl:min-w-[310px] ${
           height <= 400

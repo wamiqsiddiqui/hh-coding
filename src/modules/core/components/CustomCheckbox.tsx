@@ -75,7 +75,7 @@ const CustomCheckbox = ({
           {checked && (
             <FaCheck
               {...(checkSize && { size: checkSize })}
-              className={`text-custom-green hover:text-dark-green ${checkClassName}`}
+              className={`text-primary-color hover:text-dark-green ${checkClassName}`}
             />
           )}
         </div>
@@ -95,7 +95,7 @@ const CustomCheckbox = ({
               {checkboxText}{" "}
               {linkText && link && (
                 <span
-                  className="text-secondary-green underline"
+                  className="text-secondary-color underline"
                   onClick={() => link()}
                 >
                   {linkText}{" "}

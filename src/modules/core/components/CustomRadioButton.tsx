@@ -28,18 +28,18 @@ const RadioCircle = ({
         isSelected
           ? checkedCircle
             ? ""
-            : "bg-custom-green hover:bg-dark-green"
+            : "bg-primary-color hover:bg-dark-green"
           : "bg-white hover:border-grayShades-datagrid border-grayShades-borderGray border-[1px]"
       }`}
     >
       {isSelected && checkedCircle ? (
         <div
-          className={`border-custom-green border-[1px] rounded-full ${
+          className={`border-primary-color border-[1px] rounded-full ${
             outWidth ?? "w-6"
           } ${outHeight ?? "h-6"} flex justify-center items-center`}
         >
           <div
-            className={`bg-custom-green rounded-full ${inWidth ?? "w-4"} ${
+            className={`bg-primary-color rounded-full ${inWidth ?? "w-4"} ${
               inHeight ?? "h-4"
             } flex-shrink-0`}
           />

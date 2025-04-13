@@ -44,9 +44,10 @@ module.exports = {
         stripes: "url('/src/assets/images/stripesbg.png')",
       },
       colors: {
-        "custom-green": "#ED1A5C", // Green color
-        "secondary-green": "#FFC6D8",
+        "primary-color": "#ED1A5C",
+        "secondary-color": "#FFC6D8",
         "tertiary-color": "#FFF6FA",
+        "dark-primary": "#C4033F",
         "dark-green": "#479e3c",
         textBoxGreen: "#58B031",
         "custom-light-green": "#F6FCF3",

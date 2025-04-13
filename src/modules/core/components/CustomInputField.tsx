@@ -118,7 +118,7 @@ const CustomInputField = ({
           <div
             className={`flex flex-col pb-3 pt-4 items-end ${
               bgColor ? bgColor : "bg-white"
-            } w-full rounded-lg border-[1px] shadow-input-field-light border-hhGrayShades-borderGray focus-within:border-custom-green`}
+            } w-full rounded-lg border-[1px] shadow-input-field-light border-hhGrayShades-borderGray focus-within:border-black`}
           >
             <textarea
               className={`bg-transparent text-xs px-2 w-full h-full outline-none placeholder:text-xs placeholder:text-grayShades-textGray`}
@@ -151,7 +151,7 @@ const CustomInputField = ({
             !noBorder &&
             `${
               bgColor ? bgColor : "bg-white"
-            } h-10 border-[1px] shadow-input-field-light border-hhGrayShades-borderGray focus-within:border-custom-green`
+            } h-11 border-[1px] shadow-input-field-light border-hhGrayShades-borderGray focus-within:border-black`
           } w-full rounded-lg`}
         >
           {prefix && (

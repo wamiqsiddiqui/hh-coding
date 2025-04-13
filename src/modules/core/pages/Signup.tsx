@@ -202,10 +202,7 @@ const Signup = () => {
                     <BusinessInformation
                       fieldNames={businessInfoFieldNames}
                       setSelectedSection={setSelectedSection}
-                      type={""}
-                      isPending={false}
                       selectedSection={selectedSection}
-                      checkError={false}
                     />
                   </TabParent>
                   <TabParent
@@ -218,10 +215,7 @@ const Signup = () => {
                     <LegalDetails
                       fieldNames={legalDetailsFieldNames}
                       setSelectedSection={setSelectedSection}
-                      type={""}
-                      isPending={false}
                       selectedSection={selectedSection}
-                      checkError={false}
                     />
                   </TabParent>
                   <TabParent
@@ -232,9 +226,6 @@ const Signup = () => {
                     customCSS={customCSS}
                   >
                     <AccountCredentials
-                      fieldNames={[]}
-                      setSelectedSection={setSelectedSection}
-                      isPending={false}
                       selectedSection={selectedSection}
                       checkError={checkError}
                     />

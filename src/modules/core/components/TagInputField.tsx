@@ -40,7 +40,7 @@ const TagInputField = ({
         </p>
       )}
       <div
-        className={`flex items-center  border-[1px] border-grayShades-datagrid focus-within:border-custom-green bg-white w-full h-10 rounded-lg`}
+        className={`flex items-center  border-[1px] border-grayShades-datagrid focus-within:border-black bg-white w-full h-11 rounded-lg`}
       >
         <input
           className={`bg-transparent text-xs placeholder:text-xs placeholder:text-grayShades-textGray px-2 w-full h-full outline-none`}

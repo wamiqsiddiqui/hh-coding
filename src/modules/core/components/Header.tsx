@@ -45,10 +45,10 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky z-50 h-16 flex justify-between border-b-custom-green border-b-[1px] ${
+      className={`sticky z-50 h-16 flex justify-between border-b-primary-color border-b-[1px] ${
         window.location.pathname === "/service-provider/portal/login"
           ? "items-center pl-5"
-          : `bg-custom-green items-center top-0 left-0 right-0 px-5 animate-dropdown duration-150 transition-all`
+          : `bg-primary-color items-center top-0 left-0 right-0 px-5 animate-dropdown duration-150 transition-all`
       }`}
     >
       <div className="flex items-center justify-end">

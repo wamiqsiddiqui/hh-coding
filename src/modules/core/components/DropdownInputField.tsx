@@ -64,7 +64,7 @@ const DropdownInputField = ({
       <div
         className={`${bgColor ? bgColor : `bg-white`} ${
           fullWidth ? "w-full" : width ? width : "w-72"
-        } h-10 border-[1px] border-grayShades-datagrid focus-within:border-custom-green rounded-lg overflow-hidden`}
+        } h-11 border-[1px] border-grayShades-datagrid focus-within:border-black rounded-lg overflow-hidden`}
       >
         <Field
           as="select"
@@ -103,7 +103,7 @@ const DropdownInputField = ({
         >
           {options!.map((option) => (
             <option
-              className="hover:bg-transparent rounded-none h-10 text-sm font-normal"
+              className="hover:bg-transparent rounded-none h-11 text-sm font-normal"
               value={option.id}
             >
               {option.name}

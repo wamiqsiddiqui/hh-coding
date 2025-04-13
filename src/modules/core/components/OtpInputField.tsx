@@ -62,7 +62,7 @@ const OtpInputField = ({ fieldName }: OtpInputFieldProps) => {
         return (
           <div
             key={index}
-            className={`flex items-center bg-white h-20 w-20 border-[1px] shadow-input-field-light rounded-lg border-hhGrayShades-borderGray focus-within:border-custom-green`}
+            className={`flex items-center bg-white h-20 w-20 border-[1px] shadow-input-field-light rounded-lg border-hhGrayShades-borderGray focus-within:border-black`}
           >
             <input
               ref={(el) => {

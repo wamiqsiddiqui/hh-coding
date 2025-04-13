@@ -19,12 +19,7 @@ import { ArabicFlagSvg } from "../../../../utils/svgIcons";
 type BusinessInformationProps = {
   fieldNames: SignupFieldNames[];
   setSelectedSection: Dispatch<SetStateAction<number>>;
-  type: string;
-  isPending: boolean;
   selectedSection: number;
-  email?: string;
-  checkError: boolean;
-  setCheckError?: Dispatch<SetStateAction<boolean>>;
 };
 const BusinessInformation = ({
   setSelectedSection,
@@ -136,6 +131,7 @@ const BusinessInformation = ({
           <StringField
             label={t("boxBuildingNumber")}
             fullWidth
+            allowInvalidInput
             fieldName={SignupFieldNames.boxOrBuilding}
           />
           <StringField
@@ -143,24 +139,28 @@ const BusinessInformation = ({
             fullWidth
             allowInvalidInput
             fieldName={SignupFieldNames.websiteLink}
+            isOptional
           />
           <StringField
             label={t("facebookLink")}
             fullWidth
             allowInvalidInput
             fieldName={SignupFieldNames.facebookLink}
+            isOptional
           />
           <StringField
             label={t("instagramLink")}
             allowInvalidInput
             fullWidth
             fieldName={SignupFieldNames.instagramLink}
+            isOptional
           />
           <StringField
             label={t("tiktokLink")}
             fullWidth
             allowInvalidInput
             fieldName={SignupFieldNames.tiktokLink}
+            isOptional
           />
         </div>
         <div className="mt-2 w-full">

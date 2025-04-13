@@ -15,7 +15,7 @@ const ComingSoon = () => {
         <HappyHourLogoSvg width="157.59" height="76.57" />
         <CustomChip text={t("serviceProvider")} />
       </div>
-      <h1 className="text-5xl text-custom-green font-bold mb-8 animate-pulse">
+      <h1 className="text-5xl text-primary-color font-bold mb-8 animate-pulse">
         {t("comingSoon")}
       </h1>
       <p className="text-custom-black text-lg mb-8 font-semibold">

@@ -70,7 +70,7 @@ const ResetPassword = ({ userId }: { userId: string }) => {
             }}
           >
             {({ values }) => (
-              <Form className="flex flex-col 2xl:space-y-2 w-full">
+              <Form className="flex flex-col w-full">
                 <PasswordField
                   fullWidth
                   label={t("password")}

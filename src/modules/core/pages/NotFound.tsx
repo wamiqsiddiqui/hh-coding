@@ -8,7 +8,7 @@ const NotFound = () => {
   const { t } = useTranslation();
   return (
     <div className="h-full mt-0 overflow-auto bg-gradient-to-b from-white to-gray-200 text-custom-black flex flex-col items-center justify-center">
-      <h1 className="text-7xl max-lg:text-5xl max-sm:text-4xl  text-custom-green font-bold mb-8 animate-pulse">
+      <h1 className="text-7xl max-lg:text-5xl max-sm:text-4xl  text-primary-color font-bold mb-8 animate-pulse">
         {t("notFound")}
       </h1>
       <p className="text-grayShades-customGray font-bold text-2xl mb-4">
