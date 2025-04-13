@@ -4,7 +4,7 @@ import {
   InfiniteQueryObserverResult,
 } from "@tanstack/react-query";
 import { Field, useFormikContext } from "formik";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   getFieldHelperText,
   hasBothArrayFieldAndIndex,
@@ -12,14 +12,12 @@ import {
 import { FaEyeSlash, IoEyeOutline } from "../../../utils/icons";
 import {
   confirmPassword,
-  validateCalendlyLink,
-  validateContractDuration,
-  validateCRNumber,
   validateEmail,
   validateMaximumNumber,
   validateMinimumNumber,
   validateNumber,
   validatePassword,
+  validateSaudiMobile,
   validateString,
 } from "../../../utils/validations";
 import CustomCheckbox, { CustomCheckboxProps } from "./CustomCheckbox";
@@ -28,6 +26,7 @@ import DropdownInputField from "./DropdownInputField";
 import SearchDropdown from "./SearchDropdown";
 import TagInputField from "./TagInputField";
 import TagSearchDropdown from "./TagSerchDropdown";
+import { useTranslation } from "react-i18next";
 
 export type RenderFieldProps = {
   validationLabel?: string;
@@ -239,6 +238,7 @@ export const CustomCheckboxField = ({
   linkText,
   errorText,
   link,
+  customSpan,
   onChange,
 }: CustomCheckboxProps & RenderFieldProps) => {
   const name = arrayField ? `${arrayField}[${index}].${fieldName}` : fieldName;
@@ -252,6 +252,7 @@ export const CustomCheckboxField = ({
       name={name}
       fullFieldName={name}
       linkText={linkText}
+      customSpan={customSpan}
       link={link}
       onChange={(isChecked: boolean) => {
         onChange && onChange(isChecked);
@@ -271,47 +272,26 @@ export const StringField = (
       : props.arrayField
       ? `${props.arrayField}[${props.index}].${props.fieldName}`
       : props.fieldName;
-  const { getFieldMeta } = useFormikContext();
+  const { getFieldMeta, validateField } = useFormikContext();
   const val = getFieldMeta(name);
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    validateField(name);
+  }, [t, i18n, name, validateField]);
   return (
     <RenderField
       {...props}
       type="text"
       defaultValue={val.value as string}
       validateFn={(value) =>
-        validateString(
-          value as string | null,
-          props.isOptional,
-          props.validationLabel ?? props.label ?? props.placeholder,
-          props.allowInvalidInput
-        )
-      }
-    />
-  );
-};
-
-export const CalendlyField = (
-  props: RenderFieldProps & CustomInputFieldProps
-) => {
-  const name =
-    props.subArrayField !== undefined && props.subIndex !== undefined
-      ? `${props.arrayField}[${props.index}].${props.subArrayField}[${props.subIndex}]`
-      : props.arrayField
-      ? `${props.arrayField}[${props.index}].${props.fieldName}`
-      : props.fieldName;
-  const { getFieldMeta } = useFormikContext();
-  const val = getFieldMeta(name);
-  return (
-    <RenderField
-      {...props}
-      type="text"
-      defaultValue={val.value as string}
-      validateFn={(value) =>
-        validateCalendlyLink(
-          value as string | null,
-          props.isOptional,
-          props.validationLabel ?? props.label
-        )
+        validateString({
+          value: value as string | null,
+          isOptional: props.isOptional,
+          label: props.validationLabel ?? props.label ?? props.placeholder,
+          allowInvalidInput: props.allowInvalidInput,
+          isArabic: props.isArabic,
+          t,
+        })
       }
     />
   );
@@ -329,8 +309,12 @@ export const MinimumNumberField = (
       : props.arrayField
       ? `${props.arrayField}[${props.index}].${props.fieldName}`
       : props.fieldName;
-  const { getFieldMeta } = useFormikContext();
+  const { getFieldMeta, validateField } = useFormikContext();
   const val = getFieldMeta(name);
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    validateField(name);
+  }, [t, i18n, name, validateField]);
   return (
     <RenderField
       {...props}
@@ -340,6 +324,7 @@ export const MinimumNumberField = (
         validateMinimumNumber(
           props.maximumValue,
           value as number | null,
+          t,
           props.isOptional,
           props.validationLabel ?? props.label
         )
@@ -359,8 +344,12 @@ export const MaximumNumberField = (
       : props.arrayField
       ? `${props.arrayField}[${props.index}].${props.fieldName}`
       : props.fieldName;
-  const { getFieldMeta } = useFormikContext();
+  const { getFieldMeta, validateField } = useFormikContext();
   const val = getFieldMeta(name);
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    validateField(name);
+  }, [t, i18n, name, validateField]);
   return (
     <RenderField
       {...props}
@@ -370,74 +359,11 @@ export const MaximumNumberField = (
         validateMaximumNumber(
           props.minimumValue,
           value as number | null,
+          t,
           props.isOptional,
           props.validationLabel ?? props.label
         )
       }
-    />
-  );
-};
-
-export const ContractDurationField = (
-  props: RenderFieldProps & CustomInputFieldProps
-) => {
-  const name =
-    props.subArrayField !== undefined && props.subIndex !== undefined
-      ? `${props.arrayField}[${props.index}].${props.subArrayField}[${props.subIndex}]`
-      : props.arrayField
-      ? `${props.arrayField}[${props.index}].${props.fieldName}`
-      : props.fieldName;
-  const { getFieldMeta } = useFormikContext();
-  const val = getFieldMeta(name);
-  return (
-    <RenderField
-      {...props}
-      defaultValue={val.value as string}
-      type="number"
-      validateFn={(value) => {
-        if (props.dontValidate) {
-          return null;
-        }
-        return validateContractDuration({
-          value: value as number | null,
-          isOptional: props.isOptional,
-          label: props.validationLabel ?? props.label,
-          isZeroNotAllowed: props.isZeroNotAllowed,
-          mustBeGreaterThanOne: props.mustBeGreaterThanOne,
-        });
-      }}
-    />
-  );
-};
-
-export const CRNumberField = (
-  props: RenderFieldProps & CustomInputFieldProps
-) => {
-  const name =
-    props.subArrayField !== undefined && props.subIndex !== undefined
-      ? `${props.arrayField}[${props.index}].${props.subArrayField}[${props.subIndex}]`
-      : props.arrayField
-      ? `${props.arrayField}[${props.index}].${props.fieldName}`
-      : props.fieldName;
-  const { getFieldMeta } = useFormikContext();
-  const val = getFieldMeta(name);
-  return (
-    <RenderField
-      {...props}
-      type="number"
-      defaultValue={val.value as string}
-      validateFn={(value) => {
-        if (props.dontValidate) {
-          return null;
-        }
-        return validateCRNumber({
-          value: value as number | null,
-          isOptional: props.isOptional,
-          label: props.validationLabel ?? props.label,
-          isZeroNotAllowed: props.isZeroNotAllowed,
-          mustBeGreaterThanOne: props.mustBeGreaterThanOne,
-        });
-      }}
     />
   );
 };
@@ -451,8 +377,12 @@ export const NumberField = (
       : props.arrayField
       ? `${props.arrayField}[${props.index}].${props.fieldName}`
       : props.fieldName;
-  const { getFieldMeta } = useFormikContext();
+  const { getFieldMeta, validateField } = useFormikContext();
   const val = getFieldMeta(name);
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    validateField(name);
+  }, [t, i18n, name, validateField]);
   return (
     <RenderField
       {...props}
@@ -464,6 +394,43 @@ export const NumberField = (
         }
         return validateNumber({
           value: value as number | null,
+          isOptional: props.isOptional,
+          label: props.validationLabel ?? props.label,
+          isZeroNotAllowed: props.isZeroNotAllowed,
+          mustBeGreaterThanOne: props.mustBeGreaterThanOne,
+          t,
+        });
+      }}
+    />
+  );
+};
+export const PhoneNumberField = (
+  props: RenderFieldProps & CustomInputFieldProps
+) => {
+  const name =
+    props.subArrayField !== undefined && props.subIndex !== undefined
+      ? `${props.arrayField}[${props.index}].${props.subArrayField}[${props.subIndex}]`
+      : props.arrayField
+      ? `${props.arrayField}[${props.index}].${props.fieldName}`
+      : props.fieldName;
+  const { getFieldMeta, validateField } = useFormikContext();
+  const val = getFieldMeta(name);
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    validateField(name);
+  }, [t, i18n, name, validateField]);
+  return (
+    <RenderField
+      {...props}
+      type="number"
+      defaultValue={val.value as string}
+      validateFn={(value) => {
+        if (props.dontValidate) {
+          return null;
+        }
+        return validateSaudiMobile({
+          phone: value as number | null,
+          t: t,
           isOptional: props.isOptional,
           label: props.validationLabel ?? props.label,
           isZeroNotAllowed: props.isZeroNotAllowed,
@@ -481,7 +448,11 @@ export const EmailField = (props: RenderFieldProps & CustomInputFieldProps) => {
       : props.arrayField
       ? `${props.arrayField}[${props.index}].${props.fieldName}`
       : props.fieldName;
-  const { getFieldMeta } = useFormikContext();
+  const { getFieldMeta, validateField } = useFormikContext();
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    validateField(name);
+  }, [t, i18n, name, validateField]);
   const val = getFieldMeta(name);
   return (
     <RenderField
@@ -489,7 +460,7 @@ export const EmailField = (props: RenderFieldProps & CustomInputFieldProps) => {
       type="email"
       defaultValue={val.value as string}
       name={name}
-      validateFn={(value) => validateEmail(value as string | null)}
+      validateFn={(value) => validateEmail(value as string | null, t)}
     />
   );
 };
@@ -497,8 +468,18 @@ export const EmailField = (props: RenderFieldProps & CustomInputFieldProps) => {
 export const PasswordField = (
   props: RenderFieldProps & CustomInputFieldProps & { isLogin?: boolean }
 ) => {
+  const name =
+    props.subArrayField !== undefined && props.subIndex !== undefined
+      ? `${props.arrayField}[${props.index}].${props.subArrayField}[${props.subIndex}]`
+      : props.arrayField
+      ? `${props.arrayField}[${props.index}].${props.fieldName}`
+      : props.fieldName;
   const [isObscured, setObscured] = useState(true);
-
+  const { t, i18n } = useTranslation();
+  const { validateField } = useFormikContext();
+  useEffect(() => {
+    validateField(name);
+  }, [t, i18n, name, validateField]);
   const validateFn = (
     value:
       | string
@@ -512,7 +493,7 @@ export const PasswordField = (
       return null;
     }
     if (typeof value === "string") {
-      return validatePassword(value);
+      return validatePassword(value, t);
     }
     return null;
   };
@@ -520,6 +501,7 @@ export const PasswordField = (
   return (
     <RenderField
       {...props}
+      name={name}
       type={isObscured ? "password" : "text"}
       suffix={isObscured ? <IoEyeOutline /> : <FaEyeSlash />}
       suffixClick={() => setObscured(!isObscured)}
@@ -531,10 +513,22 @@ export const ConfirmPasswordField = (
   props: RenderFieldProps &
     CustomInputFieldProps & { passwordFieldValue: string }
 ) => {
+  const name =
+    props.subArrayField !== undefined && props.subIndex !== undefined
+      ? `${props.arrayField}[${props.index}].${props.subArrayField}[${props.subIndex}]`
+      : props.arrayField
+      ? `${props.arrayField}[${props.index}].${props.fieldName}`
+      : props.fieldName;
   const [isObscured, setObscured] = useState(true);
+  const { t, i18n } = useTranslation();
+  const { validateField } = useFormikContext();
+  useEffect(() => {
+    validateField(name);
+  }, [t, i18n, name, validateField]);
   return (
     <RenderField
       {...props}
+      name={name}
       type={isObscured ? "password" : "text"}
       suffix={isObscured ? <IoEyeOutline /> : <FaEyeSlash />}
       suffixClick={() => setObscured(!isObscured)}
@@ -542,6 +536,7 @@ export const ConfirmPasswordField = (
         confirmPassword({
           confirmValue: value as string,
           passwordValue: props.passwordFieldValue as string,
+          t,
         })
       }
     />

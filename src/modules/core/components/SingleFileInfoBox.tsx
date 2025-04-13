@@ -1,14 +1,8 @@
 import deleteIcon from "../../../assets/icons/delete.png";
 import { FileInfoProps } from "../../../types/generalTypes";
-import {
-  convertByteToMB,
-  //   handleDownload,
-  truncateText,
-} from "../../../utils/helpers";
+import { convertByteToMB, truncateText } from "../../../utils/helpers";
 import IconButton from "./IconButton";
-// import { downloadDocumentById } from "../../../api/media/requests";
 import { FaCloudDownloadAlt } from "../../../utils/icons";
-// import CustomImage from "./CustomImage";
 
 export type SingleFileInfoBoxProps = {
   file: FileInfoProps;
@@ -53,11 +47,6 @@ const SingleFileInfoBox = ({
             <IconButton
               tooltipDirection={noTooltip ? undefined : "top"}
               tooltip={noTooltip ? undefined : "Download this file"}
-              //   onClick={() =>
-              //     file.fileId
-              //       ? downloadDocumentById(file.fileId!, file.filename)
-              //       : handleDownload(file.fileWithPath!)
-              //   }
               icon={<FaCloudDownloadAlt />}
             />
           )}

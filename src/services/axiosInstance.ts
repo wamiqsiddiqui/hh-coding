@@ -30,9 +30,6 @@ axiosInstance.interceptors.request.use(
     config.headers["Authorization"] = `Bearer ${localStorage.getItem(
       KEY_NAMES.accessToken
     )}`;
-    config.headers["Permissions"] =
-      localStorage.getItem(KEY_NAMES.permissions) ?? JSON.stringify({});
-    config.headers["merchantId"] = localStorage.getItem(KEY_NAMES.merchantId);
     return config;
   },
   (error) => {

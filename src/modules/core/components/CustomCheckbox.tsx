@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 
 import { FaCheck } from "../../../utils/icons";
 import { setToast } from "../../../redux/toastSlice";
@@ -7,7 +7,7 @@ import HelperText from "./HelperText";
 
 export type CustomCheckboxProps = {
   isChecked?: boolean;
-  checkboxText: string;
+  checkboxText?: string;
   fullFieldName?: string;
   disabledText?: string;
   size?: "large" | "medium" | "small" | "xlarge";
@@ -19,6 +19,7 @@ export type CustomCheckboxProps = {
   link?: () => void;
   id?: string;
   errorText?: string;
+  customSpan?: JSX.Element;
   onChange?: (isChecked: boolean) => string | null | void;
 };
 const CustomCheckbox = ({
@@ -30,6 +31,7 @@ const CustomCheckbox = ({
   checkSize,
   checkClassName,
   containerClassName,
+  customSpan,
   linkText,
   link,
   onChange,
@@ -86,14 +88,20 @@ const CustomCheckbox = ({
               : "text-sm"
           } text-hhGrayShades-tabHeader font-medium text-start`}
         >
-          {checkboxText}{" "}
-          {linkText && link && (
-            <span
-              className="text-secondary-green underline"
-              onClick={() => link()}
-            >
-              {linkText}{" "}
-            </span>
+          {customSpan ? (
+            customSpan
+          ) : (
+            <>
+              {checkboxText}{" "}
+              {linkText && link && (
+                <span
+                  className="text-secondary-green underline"
+                  onClick={() => link()}
+                >
+                  {linkText}{" "}
+                </span>
+              )}
+            </>
           )}
         </p>
       </div>

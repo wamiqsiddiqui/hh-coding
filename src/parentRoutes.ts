@@ -1,17 +1,13 @@
 export enum PARENT_ROUTES {
   all = "*",
   index = "/",
-  merchant = "/merchant",
-  deal_maker = "/deal-maker",
-  dealMakers = "/dealmakers",
+  serviceProvider = "/service-provider",
   signup = "/signup",
-  representativeSignup = "/representative-signup",
   login = "/login",
   forgotPassword = "/forgotPassword",
   updatePassword = "/updatePassword",
   notFound = "/notFound",
   idPathParameter = ":id",
-  offeringIdPathParameter = ":offeringId",
   handshake = "/handshake",
   commingSoon = "/coming-soon",
 }

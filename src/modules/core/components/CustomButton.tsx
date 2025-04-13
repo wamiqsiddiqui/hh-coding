@@ -192,7 +192,7 @@ const CustomButton = ({
               : variant === "text"
               ? `${textUnderline && "underline"} ${
                   textVariant === "green"
-                    ? `text-secondary-green ${
+                    ? `text-custom-green ${
                         !noHoverScale &&
                         "hover:text-custom-green hover:font-medium"
                       }`

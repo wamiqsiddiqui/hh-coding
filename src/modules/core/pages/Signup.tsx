@@ -1,6 +1,4 @@
 import { useState } from "react";
-// import PersonalInfo from "../components/signup/PersonalInfo";
-// import CompanyInfo from "../components/signup/CompanyInfo";
 import { Form, Formik } from "formik";
 import { SignupFieldNames, SignupFormType } from "../../../types/signupTypes";
 import { registerUser } from "../../../api/auth";
@@ -9,7 +7,6 @@ import { setToast } from "../../../redux/toastSlice";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { PARENT_ROUTES } from "../../../parentRoutes";
-// import { useEmailExists } from "../../../api/security/reactQueryHooks";
 import { TabParent } from "../components/TabParent";
 import TabHeader from "../components/TabHeader";
 import SubHeader from "../components/SubHeader";
@@ -17,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import BusinessInformation from "../components/signup/BusinessInformation";
 import LegalDetails from "../components/signup/LegalDetails";
 import AccountCredentials from "../components/signup/AccountCredentials";
+import Loader from "../components/Loader";
 export const TabParentt = ({
   children,
   selectedSection,
@@ -42,19 +40,16 @@ const Signup = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [selectedSection, setSelectedSection] = useState(0);
-  const [_, setCheckError] = useState(false);
   const initialValues: SignupFormType = {
-    firstName: "",
-    lastName: "",
     emailAddress: "",
     password: "",
     confirmPassword: "",
     phoneNo: "",
-    businessNameEng: "",
+    address: "",
+    businessNameEn: "",
     businessNameAr: "",
     businessCategory: "",
-    ownerName: "",
-    contactNo: "",
+    managerName: "",
     location: [],
     businessLicenseDoc: null,
     isAgreedOnTerms: false,
@@ -70,53 +65,61 @@ const Signup = () => {
     tiktokLink: "",
   };
   const businessInfoFieldNames = [
-    SignupFieldNames.businessNameEng,
+    SignupFieldNames.businessNameEn,
     SignupFieldNames.businessNameAr,
-    SignupFieldNames.ownerName,
+    SignupFieldNames.managerName,
     SignupFieldNames.businessCategory,
-    SignupFieldNames.emailAddress,
     SignupFieldNames.phoneNo,
+    SignupFieldNames.emailAddress,
     SignupFieldNames.boxOrBuilding,
     SignupFieldNames.websiteLink,
     SignupFieldNames.facebookLink,
     SignupFieldNames.instagramLink,
     SignupFieldNames.tiktokLink,
   ];
-
-  //   const { mutateAsync: checkEmailExists, isPending } = useEmailExists();
+  const legalDetailsFieldNames = [
+    SignupFieldNames.commercialRegNo,
+    SignupFieldNames.taxId,
+    SignupFieldNames.businessLicenseDoc,
+    SignupFieldNames.bankAccountNo,
+  ];
+  const accountCredentialsFieldNames = [
+    SignupFieldNames.password,
+    SignupFieldNames.confirmPassword,
+    SignupFieldNames.securityQuestion,
+    SignupFieldNames.securityQuestionAns,
+  ];
 
   const customCSS: React.CSSProperties = {
     overflowY: "auto",
     padding: "0px",
   };
+  const [checkError, setCheckError] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   return (
     <>
+      {isLoading && <Loader />}
       <Formik
         initialValues={initialValues}
         onSubmit={async (values: SignupFormType, { setSubmitting }) => {
           try {
-            // let emailExistsData;
-            //   emailExistsData = await checkEmailExists(values.email);
-
-            // if (emailExistsData?.data.emailExist) {
-
-            // setErrors({ emailAddress: "Email already exists" });
-            // setSubmitting(false);
-
-            await registerUser({ ...values }, false);
+            setLoading(true);
+            await registerUser({ ...values });
+            setLoading(false);
             dispatch(
               setToast({
-                text: "Account created successfully. Please check your email to verify your account",
+                text: t("registrationSuccess"),
                 variant: "success",
               })
             );
             navigate(PARENT_ROUTES.login);
             setSubmitting(false);
           } catch (error) {
+            setLoading(false);
             if (error instanceof AxiosError) {
               dispatch(
                 setToast({
-                  text: error.response?.data.message || "Something went wrong",
+                  text: error.response?.data.message || t("somethingWentWrong"),
                   variant: "error",
                 })
               );
@@ -124,7 +127,7 @@ const Signup = () => {
           }
         }}
       >
-        {({ handleSubmit, setFieldTouched, validateField, errors, values }) => (
+        {({ values, handleSubmit, setFieldTouched, validateField, errors }) => (
           <Form
             className="h-full"
             onSubmit={async (event) => {
@@ -132,17 +135,18 @@ const Signup = () => {
               if (values.isAgreedOnTerms === false) {
                 setCheckError(true);
               }
-              businessInfoFieldNames.forEach(async (field) => {
+              accountCredentialsFieldNames.forEach(async (field) => {
                 await setFieldTouched(field);
                 await validateField(field);
               });
-
               if (
                 Object.keys(errors).length === 0 &&
-                values.isAgreedOnTerms === true &&
+                values.isAgreedOnTerms &&
                 values.businessLicenseDoc
               ) {
                 handleSubmit();
+              } else {
+                console.log("err", errors);
               }
               event.preventDefault();
             }}
@@ -159,18 +163,30 @@ const Signup = () => {
 
                 <div className="flex w-full justify-center mb-4">
                   <TabHeader
-                    headerText="Business Information"
-                    onClick={() => setSelectedSection(0)}
+                    headerText={t("businessInformation")}
+                    onClick={
+                      selectedSection > 0
+                        ? () => setSelectedSection(0)
+                        : undefined
+                    }
                     isSelected={selectedSection === 0}
                   />
                   <TabHeader
-                    headerText="Legal Details"
-                    onClick={() => setSelectedSection(1)}
+                    headerText={t("legalDetails")}
+                    onClick={
+                      selectedSection > 1
+                        ? () => setSelectedSection(1)
+                        : undefined
+                    }
                     isSelected={selectedSection === 1}
                   />
                   <TabHeader
-                    headerText="Account Credentials"
-                    onClick={() => setSelectedSection(2)}
+                    headerText={t("accountCredentials")}
+                    onClick={
+                      selectedSection > 1
+                        ? () => setSelectedSection(2)
+                        : undefined
+                    }
                     isSelected={selectedSection === 2}
                   />
                 </div>
@@ -184,7 +200,7 @@ const Signup = () => {
                     customCSS={customCSS}
                   >
                     <BusinessInformation
-                      fieldNames={[]}
+                      fieldNames={businessInfoFieldNames}
                       setSelectedSection={setSelectedSection}
                       type={""}
                       isPending={false}
@@ -200,30 +216,13 @@ const Signup = () => {
                     customCSS={customCSS}
                   >
                     <LegalDetails
-                      fieldNames={[]}
+                      fieldNames={legalDetailsFieldNames}
                       setSelectedSection={setSelectedSection}
                       type={""}
                       isPending={false}
                       selectedSection={selectedSection}
                       checkError={false}
                     />
-                    {/* <PersonalInfo
-                    fieldNames={[
-                      SignupFieldNames.companyName,
-                      SignupFieldNames.firstName,
-                      SignupFieldNames.lastName,
-                      SignupFieldNames.password,
-                      SignupFieldNames.email,
-                      SignupFieldNames.terms,
-                    ]}
-                    type={type}
-                    checkEmailExists={checkEmailExists}
-                    isPending={isPending}
-                    selectedSection={selectedSection}
-                    setSelectedSection={setSelectedSection}
-                    checkError={checkError}
-                    setCheckError={setCheckError}
-                  /> */}
                   </TabParent>
                   <TabParent
                     index={2}
@@ -235,30 +234,10 @@ const Signup = () => {
                     <AccountCredentials
                       fieldNames={[]}
                       setSelectedSection={setSelectedSection}
-                      type={""}
                       isPending={false}
                       selectedSection={selectedSection}
-                      checkError={false}
+                      checkError={checkError}
                     />
-                    {/* <CompanyInfo
-                    fieldNames={
-                      type === "dealMaker" || type === "seller"
-                        ? []
-                        : [
-                            SignupFieldNames.crNumber,
-                            SignupFieldNames.companySize,
-                            SignupFieldNames.companyLegalName,
-                            SignupFieldNames.investedCapital,
-                            SignupFieldNames.investedCapitalUnit,
-                            SignupFieldNames.crDocument,
-                            SignupFieldNames.licenseDocument,
-                          ]
-                    }
-                    selectedSection={selectedSection}
-                    setSelectedSection={setSelectedSection}
-                    setSkip={setSkip}
-                    skip={skip}
-                  /> */}
                   </TabParent>
                 </div>
               </div>

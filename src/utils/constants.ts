@@ -1,7 +1,7 @@
 export const KEY_NAMES = {
   accessToken: "accessToken",
   permissions: "permissions",
-  merchantId: "merchantId",
+  userId: "userId",
   refreshToken: "refreshToken",
   rememberMe: "rememberMe",
   emailAddress: "emailAddress",

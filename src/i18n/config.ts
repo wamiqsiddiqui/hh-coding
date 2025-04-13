@@ -4,7 +4,6 @@ import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 import ar from "../assets/translations/ar.json";
 import en from "../assets/translations/en.json";
-// import { Regional } from "../utils/helpers";
 
 // Await Import to fix Reference Error
 const loadRegional = async () => {

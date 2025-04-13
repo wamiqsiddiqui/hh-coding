@@ -4,17 +4,45 @@ import i18n from "../i18n/config";
 import { jwtPayload, LanguageType, RoleEnum } from "../types/generalTypes";
 
 export type TLoginResponse = {
-  access_token: string;
-  refresh_token: string;
-  expires_in: number;
-  refresh_expires_in: number;
-  token_type: string;
-  session_state: string;
-  subRole?: string;
-  merchantId?: string;
-  permissions?: {
-    [key: string]: string[];
+  user: {
+    location: {
+      coordinates: number[];
+      type: string;
+    };
+    _id: string;
+    firstName: string;
+    lastName: string;
+    fullName: string;
+    emailAddress: string;
+    password: string | null;
+    phoneNo: string;
+    role: RoleEnum.SERVICE_PROVIDER;
+    profileImage: string | null;
+    isActive: boolean;
+    fcmToken: string;
+    businessNameEn: string;
+    businessNameAr: string;
+    businessCategory: string;
+    managerName: string;
+    address: string;
+    facebookLink: string;
+    tikTokLink: string;
+    instagramLink: string;
+    websiteLink: string;
+    boxOrBuilding: string;
+    commercialRegNo: string;
+    taxId: string;
+    bankAccountNo: string;
+    businessLicenseDoc: string;
+    securityQuestion: string;
+    securityQuestionAns: string;
+    isAgreedOnTerms: boolean;
+    isApproved: boolean;
+    createdAt: string;
+    updatedAt: string;
+    __v: 0;
   };
+  authToken: string;
 };
 type TAuth = {
   isLoggedIn: boolean;
@@ -22,13 +50,9 @@ type TAuth = {
   expiresIn: number;
   refreshExpiresIn: number;
   refreshToken: string;
-  role: RoleEnum | string;
+  role: string;
   user: jwtPayload | null;
   subRole?: string;
-  permissions?: {
-    [key: string]: string[];
-  };
-  merchantId?: string;
   language?: LanguageType;
 };
 const INITIAL_STATE: TAuth = {
@@ -40,8 +64,6 @@ const INITIAL_STATE: TAuth = {
   role: "",
   user: null,
   subRole: "",
-  permissions: {},
-  merchantId: "",
   language: "en" as LanguageType,
   // Change to this when displaying RTL again
   //  language: i18n.language as LanguageType,
@@ -60,8 +82,6 @@ const authSlice = createSlice({
       state.role = action.payload.role;
       state.user = action.payload.user;
       state.subRole = action.payload.subRole;
-      state.permissions = action.payload.permissions;
-      state.merchantId = action.payload.merchantId;
     },
     setLogout: (state) => {
       state.isLoggedIn = false;
@@ -71,7 +91,6 @@ const authSlice = createSlice({
       state.refreshToken = "";
       state.role = "";
       state.user = null;
-      state.permissions = {};
     },
     updateAccessToken(state, action: PayloadAction<string>) {
       state.accessToken = action.payload;
@@ -80,10 +99,7 @@ const authSlice = createSlice({
       const language = action.payload;
       state.language = language;
       Regional.language.set(localStorage.getItem("i18nextLng") ?? "en");
-      // if (state.language !== action.payload) {
       i18n.changeLanguage(action.payload);
-
-      // }
     },
   },
 });

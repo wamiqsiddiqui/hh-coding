@@ -11,7 +11,6 @@ import {
   useEffect,
   useState,
 } from "react";
-// import { Offering } from "../../../types/offeringTypes";
 import { IoIosArrowUp, IoIosCloseCircle, IoMdSend } from "../../../utils/icons";
 import { CustomInputFieldProps } from "./CustomInputField";
 import CustomTooltip from "./CustomTooltip";

@@ -1,68 +1,51 @@
+import { TFunction } from "react-i18next";
+
 export const isEmpty = (
   value: string | number | null,
+  t: TFunction<"translation", undefined>,
   isOptional?: boolean
 ) => {
   if (!value && !isOptional) {
-    return "cannot be empty";
+    return t("cannotBeEmpty");
   }
   return null;
 };
-export const validateString = (
-  value: string | null,
-  isOptional?: boolean,
-  label?: string,
-  allowInvalidInput?: boolean
-) => {
-  const emptyError = isEmpty(value, isOptional);
-  if (emptyError) {
-    return label ? `${label} ${emptyError}` : `Field ${emptyError}`;
-  }
-
-  // Updated regex without the `u` flag for emoji support
-  if (
-    !allowInvalidInput &&
-    value &&
-    !/^(?! )[a-zA-Z0-9\s\u0600-\u06FF]+$/.test(value)
-  ) {
-    return "Invalid Input";
-  }
-  return null;
-};
-
-export const validateContractDuration = ({
+export const validateString = ({
   value,
-  ...rest
-}: {
-  isZeroNotAllowed?: boolean;
-  mustBeGreaterThanOne?: boolean;
-  value: number | null;
-  isOptional?: boolean;
-  label?: string;
-}) => {
-  const validateNumberError = validateNumber({ value, ...rest });
-  if (validateNumberError) return validateNumberError;
-  if (value! > 1000) {
-    return "Contract Duration cannot be more than 1000 months (83 years)";
-  }
-  return null;
-};
-
-export const validateCRNumber = ({
-  value,
+  allowInvalidInput,
   isOptional,
-  ...rest
+  label,
+  isArabic,
+  t,
 }: {
-  isZeroNotAllowed?: boolean;
-  mustBeGreaterThanOne?: boolean;
-  value: number | null;
+  value: string | null;
   isOptional?: boolean;
   label?: string;
+  allowInvalidInput?: boolean;
+  isArabic?: boolean;
+  t: TFunction<"translation", undefined>;
 }) => {
-  const validateNumberError = validateNumber({ value, isOptional, ...rest });
-  if (validateNumberError) return validateNumberError;
-  if (value!.toString().length !== 10 && !isOptional) {
-    return "CR Number must be 10 digits";
+  const trimmedValue = value?.trim() || "";
+
+  const emptyError = isEmpty(trimmedValue, t, isOptional);
+  if (emptyError) {
+    return label ? `${label} ${emptyError}` : `${t("field")} ${emptyError}`;
   }
+
+  if (!allowInvalidInput && trimmedValue) {
+    if (isArabic) {
+      // Only allow Arabic characters and spaces
+      if (!/^[\u0600-\u06FF\s]+$/.test(trimmedValue)) {
+        return t("onlyArabicCharactersAllowed");
+      }
+    } else {
+      // Allow English letters, numbers, Arabic, and spaces
+      if (!/^(?! )[a-zA-Z0-9\s\u0600-\u06FF]+$/.test(trimmedValue)) {
+        return t("invalidInput");
+      }
+    }
+  }
+
   return null;
 };
 
@@ -72,24 +55,28 @@ export const validateNumber = ({
   label,
   isZeroNotAllowed,
   mustBeGreaterThanOne,
+  t,
 }: {
   isZeroNotAllowed?: boolean;
   mustBeGreaterThanOne?: boolean;
   value: number | null;
   isOptional?: boolean;
   label?: string;
+  t: TFunction<"translation", undefined>;
 }): string | null => {
   if (
     (value === undefined || value === null || value?.toString().length === 0) &&
     !isOptional
   )
-    return label ? `${label} cannot be empty` : "This field cannot be empty";
+    return label
+      ? `${label} ${t("cannotBeEmpty")}`
+      : t("thisFieldCannotBeEmpty");
   else if (value && isNaN(value)) {
-    return "Value must be a number";
+    return t("valueMustBeNumber");
   } else if (value && value < 0) {
-    return "Number must be positive";
+    return t("numberMustBePositive");
   } else if (value === 0 && isZeroNotAllowed) {
-    return "Number must be greater than 0";
+    return t("numberMustNotBeZero");
   } else if (
     value !== undefined &&
     value !== null &&
@@ -97,31 +84,49 @@ export const validateNumber = ({
     value <= 1 &&
     mustBeGreaterThanOne
   ) {
-    return "Number must be greater than 1";
+    return t("numberMustBeGreaterThan1");
   }
   return null;
 };
 
-export const validateCalendlyLink = (
-  value: string | null,
-  isOptional?: boolean,
-  label?: string
-) => {
-  const validatedString = validateString(value, isOptional, label, true);
-  if (validatedString !== null) return validatedString;
-  if (value && !/https:\/\/calendly\.com\/[a-zA-Z0-9_-]+/.test(value)) {
-    return "Invalid Calendly Link";
+export const validateSaudiMobile = ({
+  phone,
+  t,
+  ...rest
+}: {
+  t: TFunction<"translation", undefined>;
+  isZeroNotAllowed?: boolean;
+  mustBeGreaterThanOne?: boolean;
+  phone: number | null;
+  isOptional?: boolean;
+  label?: string;
+}): string | null => {
+  const validateNumberError = validateNumber({
+    value: phone,
+    t,
+    ...rest,
+  });
+  if (validateNumberError) return validateNumberError;
+
+  if (phone!.toString().trim().length !== 9) {
+    return t("phoneNumberMustBe9Digits");
   }
+
+  if (!/^5\d{8}$/.test(phone!.toString())) {
+    return t("phoneNumberMustHave5AndOnlyDigits");
+  }
+
   return null;
 };
 
 export const validateMinimumNumber = (
   maximumValue: number | null,
   value: number | null,
+  t: TFunction<"translation", undefined>,
   isOptional?: boolean,
   label?: string
 ): string | null => {
-  const validateNumberError = validateNumber({ value, isOptional, label });
+  const validateNumberError = validateNumber({ value, isOptional, t, label });
   if (validateNumberError) return validateNumberError;
   if (maximumValue && value! > maximumValue) {
     return "Minimum value cannot be greater than Maximum value";
@@ -131,10 +136,11 @@ export const validateMinimumNumber = (
 export const validateMaximumNumber = (
   minimumValue: number | null,
   value: number | null,
+  t: TFunction<"translation", undefined>,
   isOptional?: boolean,
   label?: string
 ): string | null => {
-  const validateNumberError = validateNumber({ value, isOptional, label });
+  const validateNumberError = validateNumber({ value, t, isOptional, label });
   if (validateNumberError) return validateNumberError;
   if (minimumValue && value! < minimumValue) {
     return "Maximum value cannot be less than Minimum value";
@@ -142,35 +148,43 @@ export const validateMaximumNumber = (
   return null;
 };
 
-export const validateEmail = (value: string | null, isOptional?: boolean) => {
-  const emptyError = isEmpty(value, isOptional);
-  if (emptyError) return `Email ${emptyError}`;
+export const validateEmail = (
+  value: string | null,
+  t: TFunction<"translation", undefined>,
+  isOptional?: boolean
+) => {
+  const emptyError = isEmpty(value, t, isOptional);
+  if (emptyError) return `${t("email")} ${emptyError}`;
   if (value && !/^[A-Z0-9._+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-    return "Invalid Email";
+    return t("invalidEmail");
   }
   return null;
 };
 export const confirmPassword = ({
   confirmValue,
   passwordValue,
+  t,
 }: {
   confirmValue: string;
   passwordValue: string;
+  t: TFunction<"translation", undefined>;
 }) => {
-  const emptyError = isEmpty(confirmValue);
-  if (emptyError) return `Password ${emptyError}`;
-
+  const emptyError = isEmpty(confirmValue, t);
+  if (emptyError) return `${t("password")} ${emptyError}`;
   if (confirmValue.trim() !== passwordValue.trim()) {
-    return "Confirm Password must be equal to Password";
+    return t("confirmPasswordMustBeEqualToPassword");
   }
   return null;
 };
-export const validatePassword = (value: string) => {
-  const emptyError = isEmpty(value);
-  if (emptyError) return `Password ${emptyError}`;
+export const validatePassword = (
+  value: string,
+  t: TFunction<"translation", undefined>
+) => {
+  const emptyError = isEmpty(value, t);
+  if (emptyError) return `${t("password")} ${emptyError}`;
 
   if (value.length < 8) {
-    return "Password must be at least 8 characters";
+    return t("passwordMustBe8Characters");
   }
 
   if (
@@ -178,11 +192,11 @@ export const validatePassword = (value: string) => {
       value
     )
   ) {
-    return "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character";
+    return t("passwordSpecialCharacterError");
   }
 
   if (value.includes(" ")) {
-    return "Password cannot contain empty spaces";
+    return t("passwordEmptySpacesError");
   }
   return null;
 };

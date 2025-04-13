@@ -12,6 +12,7 @@ import { hasBothArrayFieldAndIndex } from "../../../utils/helpers";
 import HelperText from "./HelperText";
 import SingleFileInfoBox from "./SingleFileInfoBox";
 import { UploadCloud } from "../../../utils/svgIcons";
+import { useTranslation } from "react-i18next";
 export type DocumentUploaderProps = {
   title: string;
   fieldName: string;
@@ -27,21 +28,9 @@ const DocumentUploader = <T,>({
   onlyImages,
 }: DocumentUploaderProps) => {
   const acceptedFileTypes: Accept = {
-    "image/png": [".png"],
-    "image/gif": [".gif"],
-    "image/jpeg": [".jpeg", ".jpg"],
+    "application/pdf": [".pdf"],
   };
 
-  //   const extraFileTypes: Accept = {
-  //     "application/pdf": [".pdf"],
-  //     "application/msword": [".doc"],
-  //     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [
-  //       ".docx",
-  //     ],
-  //     "application/vnd.ms-powerpoint": [".ppt"],
-  //     "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-  //       [".pptx"],
-  //   };
   const maxFileSize: number = 10 * 1024 * 1024; // 10 MB in bytes
 
   const [uploadedFile, setUploadedFile] = useState<{
@@ -82,15 +71,16 @@ const DocumentUploader = <T,>({
     }
   }, [name, getFieldMeta, uploadedFile]);
   hasBothArrayFieldAndIndex({ arrayField, index });
+  const { t } = useTranslation();
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[], fileRejections: FileRejection[]) => {
       if (fileRejections.length > 1 || acceptedFiles.length > 1) {
-        setError("Upload only one file.");
+        setError(t("uploadOnlyOneFile"));
       } else if (
         fileRejections.length > 0 &&
         fileRejections[0].errors[0].code === "file-too-large"
       ) {
-        setError(`File must be less than 10 MB`);
+        setError(t("fileSizeError"));
       } else if (fileRejections.length > 0) {
         setError(`${fileRejections[0].errors[0].message}`);
       } else if (acceptedFiles.length > 0) {
@@ -114,23 +104,17 @@ const DocumentUploader = <T,>({
         reader.readAsDataURL(acceptedFiles[0]);
       }
     },
-    [name, setFieldValue]
+    [name, setFieldValue, t]
   );
   const { getRootProps, getInputProps, isDragActive, isDragReject } =
     useDropzone({
       onDrop,
       maxSize: maxFileSize,
       maxFiles: 1,
-      accept:
-        // uploaderFrom === "OFFERING_RESOURCES"
-        //   ? { ...acceptedFileTypes, ...extraFileTypes }
-        //   : uploaderFrom === "PROFILE"
-        //   ? { ...acceptedFileTypes, "application/pdf": [".pdf"] }
-        //   :
-        acceptedFileTypes,
+      accept: acceptedFileTypes,
     });
   return (
-    <div className="flex w-full mb-4 flex-col items-start">
+    <div className="flex w-full flex-col items-start">
       {uploadedFile ? (
         <>
           <p className={`text-sm font-normal text-hhGrayShades-label mb-2`}>
@@ -174,18 +158,18 @@ const DocumentUploader = <T,>({
             {isDragActive ? (
               <>
                 <p className="text-text-black text-lg font-semibold">
-                  Drop the files here....
+                  {t("dropFilesHere")}
                 </p>
               </>
             ) : isDragReject ? (
-              <>Drag Rejected</>
+              <>{t("fileRejected")}</>
             ) : (
               <div className="flex items-center gap-1 px-2">
                 <p className="text-text-black text-xs sm:text-base font-medium">
                   <span className="text-secondary-green text-xs sm:text-base font-medium">
-                    Upload a file &nbsp;
+                    {t("uploadFile")} &nbsp;
                   </span>
-                  or directly drag and drop here
+                  {t("orDirectlyDragAndDropHere")}
                 </p>
               </div>
             )}
@@ -210,17 +194,19 @@ const DocumentUploader = <T,>({
             {isDragActive ? (
               <>
                 <p className="text-sm font-normal text-hhGrayShades-label">
-                  Drop the files here....
+                  {t("dropFilesHere")}
                 </p>
               </>
             ) : isDragReject ? (
-              <p className="text-error text-sm font-normal">Drag Rejected</p>
+              <p className="text-error text-sm font-normal">
+                {t("fileRejected")}
+              </p>
             ) : (
               <p className="text-sm font-normal text-hhGrayShades-label">
                 <span className="text-custom-green text-sm font-normal">
-                  Upload a file&nbsp;
+                  {t("uploadFile")}&nbsp;
                 </span>
-                or directly drag and drop here
+                {t("orDirectlyDragAndDropHere")}
               </p>
             )}
             <UploadCloud />

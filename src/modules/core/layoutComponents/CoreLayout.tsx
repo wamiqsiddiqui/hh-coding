@@ -1,8 +1,6 @@
 import { useLocation } from "react-router-dom";
-// import Header from "../components/Header";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-// import { RootState } from "../../../redux/store";
 
 type CoreLayoutProps = {
   children: React.ReactNode;
@@ -15,7 +13,6 @@ const CoreLayout = ({ children }: CoreLayoutProps) => {
   /**If there's a need to make header not sticky after some scroll down then revert back to it by removing the 'overflow-auto' class from below div*/
   return (
     <>
-      {/* <Header /> */}
       <div
         onScroll={(event: React.UIEvent<HTMLDivElement, UIEvent>) =>
           onScroll && onScroll(event)

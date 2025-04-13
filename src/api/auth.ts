@@ -1,87 +1,65 @@
-import { FileWithPath } from "react-dropzone";
 import axiosInstance from "../services/axiosInstance";
-import { RegisterUserResponse, RoleEnum } from "../types/generalTypes";
-// import { SignupFormType } from "../types/signupTypes";
-// import { uploadDocument } from "./media/requests";
+import { RegisterUserResponse } from "../types/generalTypes";
+import { SignupFieldNames, SignupFormType } from "../types/signupTypes";
 import { TLoginResponse } from "../redux/auth";
-import { encryptPassword } from "../utils/helpers";
 
-export const registerUser = async (
-  data: any, //SignupFormType,
-  hasNoCompanyInfo: boolean
-) => {
+export const registerUser = async (data: SignupFormType) => {
   delete data.confirmPassword;
-  if (process.env.REACT_APP_IS_ALLOW_ENCRYPTION === "true") {
-    const password: string = encryptPassword(data.password);
-    data.password = password;
-  }
-  if (data.type === RoleEnum.MERCHANT) {
-    const attr = data.attributes;
+  const formData = new FormData();
 
-    const crDocument = attr.crDocument
-      ? (attr.crDocument?.fileWithPath as FileWithPath)
-      : null;
-    const licenseDocument = attr.licenseDocument
-      ? (attr.licenseDocument?.fileWithPath as FileWithPath)
-      : null;
-    const optionalDocuments = [];
-    if (crDocument) {
-      optionalDocuments.push(crDocument);
-    }
-    if (licenseDocument) {
-      optionalDocuments.push(licenseDocument);
-    }
-    // let responseMessage;
-    if (optionalDocuments.length > 0) {
-      //   responseMessage = await uploadDocument(optionalDocuments);
-    }
-    return axiosInstance.post<RegisterUserResponse>(
-      "/users/register",
-      hasNoCompanyInfo
-        ? {
-            companyName: data.companyName,
-            email: data.email,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            password: data.password,
-            type: data.type,
-          }
-        : {
-            ...data,
-            // attributes: {
-            //   company: {
-            //     ...data.attributes,
-            //     crNumber: data.attributes.crNumber.toString(),
-            //     crDocument:
-            //       responseMessage && crDocument
-            //         ? responseMessage?.message[0].fileId
-            //         : null,
-            //     licenseDocument:
-            //       responseMessage && optionalDocuments.length > 1
-            //         ? responseMessage.message[1].fileId
-            //         : responseMessage && licenseDocument
-            //         ? responseMessage.message[0].fileId
-            //         : null,
-            //   },
-            // },
-          }
+  // Append string fields
+  formData.append(SignupFieldNames.emailAddress, data.emailAddress);
+  formData.append(SignupFieldNames.password, data.password);
+  formData.append(SignupFieldNames.phoneNo, data.phoneNo);
+  formData.append(SignupFieldNames.businessNameEn, data.businessNameEn);
+  formData.append(SignupFieldNames.businessNameAr, data.businessNameAr);
+  formData.append(SignupFieldNames.businessCategory, data.businessCategory);
+  formData.append(SignupFieldNames.managerName, data.managerName);
+  formData.append(SignupFieldNames.address, data.address);
+  formData.append(
+    SignupFieldNames.isAgreedOnTerms,
+    String(data.isAgreedOnTerms)
+  );
+  formData.append(SignupFieldNames.securityQuestion, data.securityQuestion);
+  formData.append(
+    SignupFieldNames.securityQuestionAns,
+    data.securityQuestionAns
+  );
+  formData.append(SignupFieldNames.commercialRegNo, data.commercialRegNo);
+  formData.append(SignupFieldNames.taxId, data.taxId);
+  formData.append(SignupFieldNames.bankAccountNo, data.bankAccountNo);
+  formData.append(SignupFieldNames.boxOrBuilding, data.boxOrBuilding);
+  formData.append(SignupFieldNames.facebookLink, data.facebookLink);
+  formData.append(SignupFieldNames.instagramLink, data.instagramLink);
+  formData.append(SignupFieldNames.websiteLink, data.websiteLink);
+  formData.append(SignupFieldNames.tiktokLink, data.tiktokLink);
+
+  if (data.businessLicenseDoc) {
+    formData.append(
+      SignupFieldNames.businessLicenseDoc,
+      data.businessLicenseDoc.fileWithPath as File
     );
   }
-  return axiosInstance.post<RegisterUserResponse>("/users/register", {
-    companyName: data.companyName,
-    email: data.email,
-    firstName: data.firstName,
-    lastName: data.lastName,
-    password: data.password,
-    type: data.type,
-    attributes: {
-      roleId:
-        data.type === RoleEnum.MERCHANT_REPRESENTATIVE ? data.roleId : null,
-    },
-  });
+
+  formData.append(
+    "location[coordinates][0]",
+    data.location[0].coordinates.toString()
+  );
+  formData.append(
+    "location[coordinates][1]",
+    data.location[1].coordinates.toString()
+  );
+
+  return axiosInstance.post<RegisterUserResponse>(
+    "/service-provider/auth/register-service-provider",
+    formData
+  );
 };
 export const refreshTokenAPI = async (token: string | null) => {
-  return await axiosInstance.post<TLoginResponse>("/security/refresh", {
-    refreshToken: token,
-  });
+  return await axiosInstance.post<{ data: TLoginResponse }>(
+    "/user/auth/refresh-session-token",
+    {
+      refreshToken: token,
+    }
+  );
 };

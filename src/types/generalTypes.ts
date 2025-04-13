@@ -73,9 +73,7 @@ export type MediaType = {
 };
 
 export enum RoleEnum {
-  MERCHANT = "merchant",
-  SELLER = "dealMaker",
-  MERCHANT_REPRESENTATIVE = "merchantRep",
+  SERVICE_PROVIDER = "SERVICE_PROVIDER",
 }
 export type DropdownType = { id: string; name: string };
 export type MultiSelectDropdownType = { id: string; name: string }[];
@@ -96,15 +94,15 @@ export type InputFieldType =
   | "password"
   | "text"
   | "number"
-  | "dropdown";
+  | "dropdown"
+  | "tel";
+
 export type jwtPayload = {
-  sid: string;
-  email_verified: boolean;
-  name: string;
-  preferred_username: string;
   userId: string;
-  email: string;
   role: string;
+  refreshToken: string;
+  iat: number;
+  exp: number;
 } & JwtPayload;
 
 export type ImageFileType = {
@@ -501,16 +499,6 @@ export type SetFieldValueType = (
   value: any,
   shouldValidate?: boolean
 ) => void;
-
-export enum ResourcesEnum {
-  OFFERINGS = "offerings",
-  JOBS = "jobs",
-  DEALS = "deals",
-  CONTRACTS = "contracts",
-  MERCHANT_PROFILE = "merchantProfile",
-  DISPUTES = "disputes",
-  SELLERS = "sellers",
-}
 
 export enum PermissionsEnum {
   Create = "Create",

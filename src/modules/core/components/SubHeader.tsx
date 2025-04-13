@@ -11,8 +11,9 @@ import { useTranslation } from "react-i18next";
 
 type SubHeaderProps = {
   noPadding?: boolean;
+  noLogo?: boolean;
 };
-const SubHeader = ({ noPadding }: SubHeaderProps) => {
+const SubHeader = ({ noPadding, noLogo }: SubHeaderProps) => {
   const { t } = useTranslation();
   const { language: lang } = useSelector(
     (state: RootState) => state.centeralizedStateData.user
@@ -20,11 +21,11 @@ const SubHeader = ({ noPadding }: SubHeaderProps) => {
   const { handleLangChange } = useRTL();
   return (
     <div
-      className={`flex w-full ${
-        !noPadding ? "px-4 justify-between mt-4" : "justify-end mb-4"
+      className={`flex w-full ${!noLogo ? "justify-between" : "justify-end"} ${
+        !noPadding ? "px-4 mt-4" : "mb-4"
       }`}
     >
-      {!noPadding && <HappyHourLogoSvg />}
+      {!noLogo && <HappyHourLogoSvg />}
       <DropdownSelectOnly
         onSelect={() => {
           handleLangChange();

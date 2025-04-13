@@ -1,25 +1,14 @@
 import { FileWithPath } from "react-dropzone";
-import { attributesType } from "./generalTypes";
 
 export type BusinessCategoriesListingType = {
   data: {
-    label: string;
+    labelEn: string;
+    labelAr: string;
     value: string;
   }[];
 };
 
 export type SignupRequestType = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  terms: boolean;
-  companyName: string;
-  type: "merchant" | "seller" | string;
-  attributes: { company: attributesType }; //SignupAttributesType
-};
-
-export type SignupFormType = {
   firstName: string;
   lastName: string;
   emailAddress: string;
@@ -34,7 +23,7 @@ export type SignupFormType = {
   location: {
     coordinates: number;
   }[];
-  businessLicenseDoc: { fileWithPath: FileWithPath; src: string } | null;
+  businessLicenseDoc: File;
   isAgreedOnTerms: boolean;
   securityQuestion: string;
   securityQuestionAns: string;
@@ -46,28 +35,42 @@ export type SignupFormType = {
   instagramLink: string;
   websiteLink: string;
   tiktokLink: string;
+  address: string;
 };
-export type SignupAttributesType = {
-  crNumber: string;
-  companySize: string;
-  companyLegalName: string;
-  investedCapital: number | null;
-  investedCapitalUnit: string;
-  crDocument: { fileWithPath: FileWithPath; src: string } | null;
-  licenseDocument: { fileWithPath: FileWithPath; src: string } | null;
+export type SignupFormType = {
+  emailAddress: string;
+  password: string;
+  phoneNo: string;
+  businessNameEn: string;
+  businessCategory: string;
+  managerName: string;
+  address: string;
+  location: {
+    coordinates: number;
+  }[];
+  businessLicenseDoc: { fileWithPath: FileWithPath; src: string } | null;
+  isAgreedOnTerms: boolean;
+  securityQuestion: string;
+  securityQuestionAns: string;
+  commercialRegNo: string;
+  taxId: string;
+  bankAccountNo: string;
+  boxOrBuilding: string;
+  facebookLink: string;
+  instagramLink: string;
+  websiteLink: string;
+  businessNameAr: string;
+  tiktokLink: string;
+  confirmPassword?: string;
 };
 export enum SignupFieldNames {
-  firstName = "firstName",
-  lastName = "lastName",
   emailAddress = "emailAddress",
   password = "password",
-  confirmPassword = "confirmPassword",
   phoneNo = "phoneNo",
-  businessNameEng = "businessNameEng",
-  businessNameAr = "businessNameAr",
+  businessNameEn = "businessNameEn",
   businessCategory = "businessCategory",
-  ownerName = "ownerName",
-  contactNo = "contactNo",
+  managerName = "managerName",
+  address = "address",
   location = "location",
   businessLicenseDoc = "businessLicenseDoc",
   isAgreedOnTerms = "isAgreedOnTerms",
@@ -80,5 +83,7 @@ export enum SignupFieldNames {
   facebookLink = "facebookLink",
   instagramLink = "instagramLink",
   websiteLink = "websiteLink",
+  businessNameAr = "businessNameAr",
   tiktokLink = "tiktokLink",
+  confirmPassword = "confirmPassword",
 }

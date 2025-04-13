@@ -29,7 +29,9 @@ export type CustomInputFieldProps = {
   helperText?: string | null;
   type?: InputFieldType;
   suffix?: JSX.Element;
+  prefix?: JSX.Element;
   suffixClick?: () => void;
+  prefixClick?: () => void;
   onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
   onBlur?:
     | React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>
@@ -44,6 +46,7 @@ export type CustomInputFieldProps = {
   autoFocus?: boolean;
   min?: number;
   max?: number;
+  isArabic?: boolean;
 };
 const CustomInputField = ({
   bottomLabel,
@@ -67,8 +70,10 @@ const CustomInputField = ({
   onBlur,
   disabled,
   suffix,
+  prefix,
   defaultValue,
   suffixClick,
+  prefixClick,
   bgColor,
   name,
   width,
@@ -76,6 +81,7 @@ const CustomInputField = ({
   autoFocus,
   min,
   max,
+  isArabic,
   ...rest
 }: CustomInputFieldProps) => {
   const [text, setText] = useState(defaultValue ? defaultValue.toString() : "");
@@ -148,8 +154,21 @@ const CustomInputField = ({
             } h-10 border-[1px] shadow-input-field-light border-hhGrayShades-borderGray focus-within:border-custom-green`
           } w-full rounded-lg`}
         >
+          {prefix && (
+            <div
+              className={`ml-2 flex-1 ${
+                prefixClick !== undefined && "cursor-pointer"
+              }`}
+              onClick={prefixClick}
+            >
+              {prefix}
+            </div>
+          )}
           <input
-            className={`text-xs rounded-lg px-2 w-full h-full outline-none placeholder:text-xs placeholder:text-grayShades-textGray text-text-black bg-white`}
+            dir={type === "number" ? "ltr" : isArabic ? "rtl" : "ltr"}
+            className={`text-xs rounded-lg px-2 ${
+              prefix ? "w-full" : "w-full"
+            } h-full outline-none placeholder:text-xs placeholder:text-grayShades-textGray text-text-black bg-white`}
             type={type}
             onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (
@@ -164,10 +183,16 @@ const CustomInputField = ({
             min={type === "number" ? 0 : undefined}
             disabled={disabled}
             defaultValue={defaultValue}
-            value={defaultValue}
+            value={isArabic ? text : defaultValue}
             placeholder={placeholder}
             name={name ?? fullfieldName}
             onChange={(e: any) => {
+              let value = e.target.value;
+              if (isArabic) {
+                // Remove English letters (a-z, A-Z)
+                value = value.replace(/[A-Za-z]/g, "");
+              }
+              setText(value);
               onChange && onChange(e);
             }}
             onBlur={(e) => {

@@ -1,15 +1,17 @@
 import { useFormikContext } from "formik";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PARENT_ROUTES } from "../../../../parentRoutes";
 import {
   SignupFieldNames,
-  SignupRequestType,
+  SignupFormType,
 } from "../../../../types/signupTypes";
 import CustomButton from "../CustomButton";
 import { StringField } from "../FormFields";
 import DocumentUploader from "../DocumentUploader";
-type PersonalInfoProps = {
+import HelperText from "../HelperText";
+import { useTranslation } from "react-i18next";
+type LegalDetailsProps = {
   fieldNames: SignupFieldNames[];
   setSelectedSection: Dispatch<SetStateAction<number>>;
   type: string;
@@ -21,72 +23,85 @@ type PersonalInfoProps = {
 };
 const LegalDetails = ({
   setSelectedSection,
-  //   fieldNames,
-  //   type,
-  //   isPending,
+  fieldNames,
   selectedSection,
-  email,
-}: //   checkError,
-//   setCheckError,
-PersonalInfoProps) => {
+}: LegalDetailsProps) => {
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedSection]);
-  const {
-    // setFieldTouched,
-    // validateField,
-    values,
-    // setErrors,
-    // errors,
-    setFieldValue,
-    // isSubmitting,
-  } = useFormikContext<SignupRequestType>();
-
-  useEffect(() => {
-    if (email) {
-      setFieldValue("email", email);
-    }
-  }, [email, setFieldValue]);
-  console.log("values = ", values);
+  const { setFieldTouched, validateField, values } =
+    useFormikContext<SignupFormType>();
+  const [helperText, setHelperText] = useState("");
+  const { t } = useTranslation();
+  const onNextClick = () => {
+    const hasNoCustomError = values.businessLicenseDoc !== null;
+    hasNoCustomError
+      ? setHelperText("")
+      : setHelperText(t("serviceImageCannotBeEmpty"));
+    fieldNames.forEach((field) => setFieldTouched(field, true));
+    let errorCount = 0;
+    fieldNames.forEach(async (field, index) => {
+      await setFieldTouched(field);
+      validateField(field).then((error) => {
+        if (error) {
+          errorCount++;
+        }
+        if (
+          index === fieldNames.length - 1 &&
+          errorCount === 0 &&
+          hasNoCustomError
+        ) {
+          setSelectedSection(2);
+        }
+      });
+    });
+  };
   return (
     <>
       <div className="overflow-x-hidden flex flex-col items-center pb-10 px-10">
         <div className="grid gap-x-4 md:grid-cols-2 max-md:grid-cols-1 w-full">
           <StringField
-            label="Commercial Registration Number"
+            label={t("commercialRegistrationNumber")}
             fullWidth
             fieldName={SignupFieldNames.commercialRegNo}
           />
           <StringField
-            label="Tax ID Number"
+            label={t("taxIdNumber")}
             fullWidth
             fieldName={SignupFieldNames.taxId}
           />
-          <DocumentUploader
-            fieldName={SignupFieldNames.businessLicenseDoc}
-            title=" Copy of Business License / Municipality Permit"
-          />
+          <div className="flex flex-col items-start">
+            <DocumentUploader
+              fieldName={SignupFieldNames.businessLicenseDoc}
+              title={t("businessLicenseDocument")}
+            />
+            {helperText &&
+              values.businessLicenseDoc !== undefined &&
+              values.businessLicenseDoc === null && (
+                <HelperText helperText={helperText} />
+              )}
+          </div>
           <StringField
-            label="Bank Account Number"
+            label={t("bankAccountNumber")}
             fullWidth
             fieldName={SignupFieldNames.bankAccountNo}
           />
         </div>
-        <div className="mt-0">
+        <div className="mt-2 w-full">
           <CustomButton
-            onClick={() => () => setSelectedSection(1)}
-            text={"Continue"}
-            fontFamily=" "
+            onClick={() => onNextClick()}
+            text={t("next")}
+            type="button"
+            width="w-full"
             fontSize="large"
             variant="primary"
           />
-
           <div className="flex flex-wrap justify-center mt-5 mb-8">
             <p className="text-grayShades-customGray text-center font-normal   text-base px-1">
-              {`Already have an account? `}
+              {t("alreadyHaveAccount")}
               <CustomButton
-                text=" Sign in"
+                text={t("space_SignIn")}
                 variant="text"
                 size="medium"
                 fontSize="medium"

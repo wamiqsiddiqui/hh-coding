@@ -8,12 +8,9 @@ import ComingSoon from "./modules/core/components/ComingSoon";
 import PublicRoute from "./modules/core/components/routeWrappers/PublicRoute";
 import CoreLayout from "./modules/core/layoutComponents/CoreLayout";
 import ForgotPassword from "./modules/core/pages/ForgotPassword";
-// import Handshake from "./modules/core/pages/Handshake";
 import Login from "./modules/core/pages/Login";
 import NotFound from "./modules/core/pages/NotFound";
-// import RepresentativeSignup from "./modules/core/pages/RepresentativeSignup";
 import Signup from "./modules/core/pages/Signup";
-import UpdatePassword from "./modules/core/pages/UpdatePassword";
 import { PARENT_ROUTES } from "./parentRoutes";
 import { updateAccessToken } from "./redux/auth";
 import { RootState } from "./redux/store";
@@ -112,9 +109,8 @@ function App() {
             <Route
               path={PARENT_ROUTES.index}
               element={
-                role === RoleEnum.MERCHANT ||
-                role === RoleEnum.MERCHANT_REPRESENTATIVE ? (
-                  <Navigate to={PARENT_ROUTES.merchant} />
+                role === RoleEnum.SERVICE_PROVIDER ? (
+                  <Navigate to={PARENT_ROUTES.serviceProvider} />
                 ) : (
                   <Navigate to={PARENT_ROUTES.login} />
                 )
@@ -133,11 +129,7 @@ function App() {
               element={<PublicRoute Component={ForgotPassword} />}
             />
             <Route
-              path={PARENT_ROUTES.updatePassword}
-              element={<PublicRoute Component={UpdatePassword} />}
-            />
-            <Route
-              path={`${PARENT_ROUTES.merchant}/*`}
+              path={`${PARENT_ROUTES.serviceProvider}/*`}
               element={<LoadModule module={<ServiceProvider />} />}
             />
             {/* <Route

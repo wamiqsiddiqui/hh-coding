@@ -1,18 +1,22 @@
 import { useFormikContext } from "formik";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PARENT_ROUTES } from "../../../../parentRoutes";
 import {
   SignupFieldNames,
-  SignupRequestType,
+  SignupFormType,
 } from "../../../../types/signupTypes";
 import CustomButton from "../CustomButton";
-import { EmailField, NumberField, StringField } from "../FormFields";
+import { EmailField, PhoneNumberField, StringField } from "../FormFields";
 import DropdownInputField from "../DropdownInputField";
 import CustomSearchGooglePlaces from "../CustomSearchGooglePlaces";
 import { useGetAllBusinessCategories } from "../../../../api/general/reactQueryHooks";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../redux/store";
+import { useTranslation } from "react-i18next";
+import { ArabicFlagSvg } from "../../../../utils/svgIcons";
 
-type PersonalInfoProps = {
+type BusinessInformationProps = {
   fieldNames: SignupFieldNames[];
   setSelectedSection: Dispatch<SetStateAction<number>>;
   type: string;
@@ -24,169 +28,155 @@ type PersonalInfoProps = {
 };
 const BusinessInformation = ({
   setSelectedSection,
-  //   fieldNames,
-  //   type,
-  //   isPending,
+  fieldNames,
   selectedSection,
-  email,
-}: //   checkError,
-//   setCheckError,
-PersonalInfoProps) => {
+}: BusinessInformationProps) => {
   const navigate = useNavigate();
   const { data: businessCategories } = useGetAllBusinessCategories();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedSection]);
-  const {
-    // setFieldTouched,
-    // validateField,
-    values,
-    // setErrors,
-    // errors,
-    setFieldValue,
-    // isSubmitting,
-  } = useFormikContext<SignupRequestType>();
-  //   const onCheckValidation = (emailCheck?: boolean) => {
-  //     if (emailCheck) {
-  //       validateField("email");
-  //     } else {
-  //       if (values.terms === false) {
-  //         setCheckError(true);
-  //       } else {
-  //         setCheckError(false);
-  //       }
-  //       fieldNames.forEach((name) => setFieldTouched(name, true));
-  //       setFieldTouched("confirmPassword", true);
-  //       let errorCount = 0;
-  //       validateField("confirmPassword").then((error) => {
-  //         if (error) {
-  //           errorCount++;
-  //         }
-  //       });
-  //       fieldNames.forEach((name, index) =>
-  //         validateField(name).then((error) => {
-  //           if (error) {
-  //             errorCount++;
-  //           }
-  //           if (
-  //             index === fieldNames.length - 1 &&
-  //             errorCount === 0 &&
-  //             !emailCheck &&
-  //             values.terms === true
-  //           ) {
-  //             setSelectedSection(2);
-  //           }
-  //         })
-  //       );
-  //     }
-  //   };
-  //   const checkEmail = async (checkEmail: boolean) => {
-  //     setFieldTouched("email", true);
-  //     if (values.email === "") {
-  //       onCheckValidation(checkEmail);
-  //       return;
-  //     }
-  //     try {
-  //       const emailExistsData = await checkEmailExists(values.email);
+  const { setFieldTouched, validateField, touched, values } =
+    useFormikContext<SignupFormType>();
+  const [helperText, setHelperText] = useState("");
 
-  //       if (!emailExistsData?.data.emailExist) {
-  //         if (type === RoleEnum.MERCHANT) onCheckValidation(checkEmail);
-  //       } else {
-  //         setErrors({ ...errors, email: "Email already exists" });
-  //       }
-  //     } catch (error) {}
-  //   };
-
-  useEffect(() => {
-    if (email) {
-      setFieldValue("email", email);
+  const onNextClick = () => {
+    if (values.address.length === 0) {
+      setHelperText(t("pleaseEnterLocation"));
     }
-  }, [email, setFieldValue]);
-  console.log("values = ", values);
+    fieldNames.forEach((field) => setFieldTouched(field, true));
+    let errorCount = 0;
+    fieldNames.forEach(async (field, index) => {
+      await setFieldTouched(field);
+      validateField(field).then((error) => {
+        if (error) {
+          errorCount++;
+        }
+        if (
+          index === fieldNames.length - 1 &&
+          errorCount === 0 &&
+          values.address.length > 0
+        ) {
+          setHelperText("");
+          setSelectedSection(1);
+        }
+      });
+    });
+  };
+  const { language } = useSelector(
+    (state: RootState) => state.centeralizedStateData.user
+  );
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    if (helperText.length > 0) {
+      setHelperText(t("pleaseEnterLocation"));
+    }
+  }, [t, i18n, helperText.length]);
   return (
     <>
       <div className="overflow-x-hidden flex flex-col items-center pb-10 px-10">
         <div className="grid gap-x-4 md:grid-cols-2 max-md:grid-cols-1 w-full">
           <StringField
-            label="Business Name In English"
+            label={t("businessNameInEnglish")}
             fullWidth
-            fieldName={SignupFieldNames.businessNameEng}
+            fieldName={SignupFieldNames.businessNameEn}
           />
           <StringField
-            label="Business Name In Arabic"
+            label={t("businessNameInArabic")}
             fullWidth
+            isArabic
             fieldName={SignupFieldNames.businessNameAr}
           />
           <StringField
-            label="Manager Name"
+            label={t("managerName")}
             fullWidth
-            fieldName={SignupFieldNames.ownerName}
+            fieldName={SignupFieldNames.managerName}
           />
           {businessCategories && (
             <DropdownInputField
-              label="Business Category"
+              label={t("businessCategory")}
               fieldName={SignupFieldNames.businessCategory}
               fullWidth
               isOptional={false}
               options={[
-                { name: "Select Business Category", id: "" },
+                { name: t("SelectBusinessCategory"), id: "" },
                 ...businessCategories.data.data.map((category) => {
-                  return { name: category.label, id: category.value };
+                  return {
+                    name:
+                      language === "en" ? category.labelEn : category.labelAr,
+                    id: category.value,
+                  };
                 }),
               ]}
             />
           )}
-          <NumberField
-            label="Contact Number"
+          <PhoneNumberField
+            label={t("contactNumber")}
             fullWidth
-            fieldName={SignupFieldNames.contactNo}
+            placeholder="5XXXXXXXX"
+            prefix={
+              <div className="flex items-center gap-x-1 w-max">
+                <ArabicFlagSvg />
+                <p className="text-xs text-hhGrayShades-textGray">+966 |</p>
+              </div>
+            }
+            fieldName={SignupFieldNames.phoneNo}
           />
           <EmailField
             fullWidth
-            label="Email Address"
+            label={t("emailAddress")}
             fieldName={SignupFieldNames.emailAddress}
           />
-          <CustomSearchGooglePlaces />
+          <CustomSearchGooglePlaces
+            touched={touched}
+            values={values}
+            helperText={helperText}
+            setHelperText={setHelperText}
+          />
           <StringField
-            label="Box Building Number"
+            label={t("boxBuildingNumber")}
             fullWidth
             fieldName={SignupFieldNames.boxOrBuilding}
           />
           <StringField
-            label="Website Link"
+            label={t("websiteLink")}
             fullWidth
+            allowInvalidInput
             fieldName={SignupFieldNames.websiteLink}
           />
           <StringField
-            label="Facebook Link"
+            label={t("facebookLink")}
             fullWidth
+            allowInvalidInput
             fieldName={SignupFieldNames.facebookLink}
           />
           <StringField
-            label="Instagram Link"
+            label={t("instagramLink")}
+            allowInvalidInput
             fullWidth
             fieldName={SignupFieldNames.instagramLink}
           />
           <StringField
-            label="Tiktok Link"
+            label={t("tiktokLink")}
             fullWidth
+            allowInvalidInput
             fieldName={SignupFieldNames.tiktokLink}
           />
         </div>
-        <div className="mt-0">
+        <div className="mt-2 w-full">
           <CustomButton
-            onClick={() => () => setSelectedSection(1)}
-            text={"Continue"}
-            fontFamily=" "
+            onClick={() => onNextClick()}
+            text={t("next")}
+            type="button"
+            width="w-full"
             fontSize="large"
             variant="primary"
           />
-
           <div className="flex flex-wrap justify-center mt-5 mb-8">
             <p className="text-grayShades-customGray text-center font-normal   text-base px-1">
-              {`Already have an account? `}
+              {`${t("alreadyHaveAccount")}`}
               <CustomButton
-                text=" Sign in"
+                text={t("space_SignIn")}
                 variant="text"
                 size="medium"
                 fontSize="medium"

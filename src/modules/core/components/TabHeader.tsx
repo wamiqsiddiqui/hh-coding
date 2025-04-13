@@ -2,7 +2,7 @@ import { JSX } from "react";
 import { MarginRightType } from "../../../types/generalTypes";
 
 type TabHeaderProps = {
-  onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   isSelected: boolean;
   headerText: string;
   chipText?: string | number;
@@ -20,7 +20,9 @@ const TabHeader = ({
   return (
     <div
       onClick={onClick}
-      className={`flex flex-col w-fit ${mr} cursor-pointer`}
+      className={`flex flex-col w-fit ${mr} ${
+        onClick !== undefined && "cursor-pointer"
+      }`}
     >
       <div className="flex-1"></div>
       <div className="flex gap-x-2 w-max items-center">

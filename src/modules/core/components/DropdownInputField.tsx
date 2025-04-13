@@ -3,6 +3,8 @@ import { getFieldHelperText } from "../../../utils/helpers";
 import { CustomInputFieldProps } from "./CustomInputField";
 import { RenderFieldProps } from "./FormFields";
 import HelperText from "./HelperText";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 const DropdownInputField = ({
   fullWidth,
@@ -22,7 +24,7 @@ const DropdownInputField = ({
   validateFn,
   onChange,
 }: RenderFieldProps & CustomInputFieldProps) => {
-  const { errors, touched, setFieldValue } = useFormikContext();
+  const { errors, touched, setFieldValue, validateField } = useFormikContext();
   const name = arrayField ? `${arrayField}[${index}].${fieldName}` : fieldName;
   const helperText = getFieldHelperText({
     errors,
@@ -40,6 +42,10 @@ const DropdownInputField = ({
     }
     setFieldValue(name, event.target.value);
   };
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    validateField(name);
+  }, [t, i18n, name, validateField]);
   return (
     <div className="flex flex-col w-full items-start">
       {(label || transparentLabel) && (
@@ -85,10 +91,10 @@ const DropdownInputField = ({
                   if (
                     !isOptional &&
                     (value?.length === 0 ||
-                      (value && value.includes("Please select")))
+                      (value && value.includes(t("pleaseSelect"))))
                   ) {
-                    return `Please select ${
-                      validationLabel ?? placeholder ?? "any value"
+                    return `${t("pleaseSelect")} ${
+                      validationLabel ?? label ?? placeholder ?? t("anyValue")
                     }`;
                   }
                   return null;

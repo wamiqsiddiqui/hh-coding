@@ -1,10 +1,12 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { PARENT_ROUTES } from "../../../../parentRoutes";
-// import { setLogout } from "../../../../redux/auth";
-// import axiosInstance from "../../../../services/axiosInstance";
-// import { KEY_NAMES } from "../../../../utils/constants";
-import { useEffect } from "react";
+import {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useCallback,
+  useEffect,
+} from "react";
 import { setToast } from "../redux/toastSlice";
 import { AxiosError } from "axios";
 import { setScroll } from "../redux/scrollSlice";
@@ -27,17 +29,23 @@ export const useLogout = () => {
       localStorage.removeItem(KEY_NAMES.accessToken);
       localStorage.removeItem(KEY_NAMES.refreshToken);
       localStorage.removeItem(KEY_NAMES.permissions);
-      localStorage.removeItem(KEY_NAMES.merchantId);
+      localStorage.removeItem(KEY_NAMES.userId);
       dispatch(setLogout());
       navigate(PARENT_ROUTES.login);
     } catch (error) {
       localStorage.removeItem(KEY_NAMES.accessToken);
       localStorage.removeItem(KEY_NAMES.refreshToken);
       localStorage.removeItem(KEY_NAMES.permissions);
-      localStorage.removeItem(KEY_NAMES.merchantId);
+      localStorage.removeItem(KEY_NAMES.userId);
       dispatch(setLogout());
       navigate(PARENT_ROUTES.login);
     }
+    dispatch(
+      setToast({
+        text: "You've been logged out successfully!",
+        variant: "success",
+      })
+    );
   };
   return logout;
 };
@@ -82,6 +90,38 @@ export const useSuccessError = ({
       );
     }
   }, [isError, dispatch, error, successMessage]);
+};
+
+export const useHeight = (
+  elementRef: RefObject<HTMLDivElement | null>,
+  setHeight: Dispatch<SetStateAction<number>>
+) => {
+  // Function to update height
+  const updateHeight = useCallback(
+    (
+      elementRef: RefObject<HTMLDivElement | null>,
+      setHeight: Dispatch<SetStateAction<number>>
+    ) => {
+      if (elementRef.current) {
+        const newHeight = elementRef.current.offsetHeight;
+        setHeight(newHeight);
+      }
+    },
+    []
+  );
+  // Add event listeners on mount and clean up on unmount
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      updateHeight(elementRef, setHeight);
+    }); // Update height on resize
+    updateHeight(elementRef, setHeight); // Initial height calculation
+
+    return () => {
+      window.removeEventListener("resize", () => {
+        updateHeight(elementRef, setHeight);
+      });
+    };
+  }, [updateHeight, elementRef, setHeight]);
 };
 
 export const useDetectScroll = ({
