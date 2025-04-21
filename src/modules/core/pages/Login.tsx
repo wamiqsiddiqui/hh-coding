@@ -191,19 +191,6 @@ export default function LoginPage() {
                 />
               </div>
               <CustomButton type="submit" fontSize="large" text={t("SignIn")} />
-              <div className="flex flex-wrap justify-center mt-5 mb-8">
-                <p className="text-grayShades-customGray text-center font-normal text-base px-1">
-                  {t("dontHaveAccount")}
-                  <CustomButton
-                    text={t("signUp")}
-                    variant="text"
-                    size="medium"
-                    fontSize="medium"
-                    noHover
-                    onClick={() => navigate(PARENT_ROUTES.signup)}
-                  />
-                </p>
-              </div>
             </Form>
           )}
         </Formik>

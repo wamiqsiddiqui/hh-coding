@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
 const queryClient = new QueryClient();
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename="/service-provider/portal">
+    <BrowserRouter basename="/admin/portal">
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <App />
