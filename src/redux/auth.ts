@@ -16,7 +16,7 @@ export type TLoginResponse = {
     emailAddress: string;
     password: string | null;
     phoneNo: string;
-    role: RoleEnum.SERVICE_PROVIDER;
+    role: RoleEnum.SUPER_ADMIN;
     profileImage: string | null;
     isActive: boolean;
     fcmToken: string;

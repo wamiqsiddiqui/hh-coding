@@ -8,7 +8,7 @@ import { PARENT_ROUTES } from "../../../parentRoutes";
 import { setLogin, TLoginResponse } from "../../../redux/auth";
 import { setToast } from "../../../redux/toastSlice";
 import axiosInstance from "../../../services/axiosInstance";
-import { KEY_NAMES } from "../../../utils/constants";
+import { KEY_NAMES } from "../../../utils/cons";
 import {
   descryptPassword,
   displayErrorMessage,
@@ -59,15 +59,16 @@ export default function LoginPage() {
     }
     try {
       setLoading(true);
-      const response = await axiosInstance.post<{ data: TLoginResponse }>(
+      const response = await axiosInstance.post<TLoginResponse>(
         "/user/auth/login",
         {
           emailAddress: values.email,
           password: values.password,
         }
       );
+      console.log("response = ", response);
       setLoading(false);
-      const accessToken = response.data.data.authToken;
+      const accessToken = response.data.authToken;
       const decodedAuthToken = jwtDecode<jwtPayload>(accessToken);
       const decodedRefreshToken = jwtDecode<jwtPayload>(
         decodedAuthToken.refreshToken
@@ -77,18 +78,21 @@ export default function LoginPage() {
         KEY_NAMES.refreshToken,
         decodedAuthToken.refreshToken
       );
+      const currentTime = Math.floor(Date.now() / 1000); // in seconds
+      const authTokenexpiresIn = decodedAuthToken.exp - currentTime; // time left in seconds
+      const refreshTokenexpiresIn = decodedRefreshToken.exp - currentTime; // time left in seconds
       dispatch(
         setLogin({
           isLoggedIn: true,
-          accessToken: response.data.data.authToken,
-          expiresIn: decodedAuthToken.exp,
+          accessToken: response.data.authToken,
+          expiresIn: authTokenexpiresIn,
           refreshToken: decodedAuthToken.refreshToken,
-          refreshExpiresIn: decodedRefreshToken.exp,
+          refreshExpiresIn: refreshTokenexpiresIn,
           role: decodedAuthToken.role,
           user: decodedAuthToken,
         })
       );
-      navigate(PARENT_ROUTES.serviceProvider);
+      navigate(PARENT_ROUTES.superAdmin);
     } catch (error) {
       setLoading(false);
       if (error instanceof AxiosError) {

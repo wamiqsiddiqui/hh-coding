@@ -6,6 +6,8 @@ import {
 } from "../../../types/generalTypes";
 import CustomTooltip from "./CustomTooltip";
 import HelperText from "./HelperText";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 export type CustomInputFieldProps = {
   placeholder?: string;
@@ -84,6 +86,9 @@ const CustomInputField = ({
   isArabic,
   ...rest
 }: CustomInputFieldProps) => {
+  const { language: lang } = useSelector(
+    (state: RootState) => state.centeralizedStateData.user
+  );
   const [text, setText] = useState(defaultValue ? defaultValue.toString() : "");
   if ((label === undefined || label.length === 0) && tooltip !== undefined) {
     throw new Error("You need to pass label IF tooltip is passed");
@@ -165,7 +170,7 @@ const CustomInputField = ({
             </div>
           )}
           <input
-            dir={type === "number" ? "ltr" : isArabic ? "rtl" : "ltr"}
+            // dir={type === "number" ? "ltr" : isArabic ? "rtl" : "ltr"}
             className={`text-xs rounded-lg px-2 ${
               prefix ? "w-full" : "w-full"
             } h-full outline-none placeholder:text-xs placeholder:text-grayShades-textGray text-text-black bg-white`}
@@ -201,7 +206,7 @@ const CustomInputField = ({
           />
           {suffix && (
             <div
-              className={`mr-2 ${
+              className={`${lang === "en" ? "mr-2" : "ml-2"} ${
                 suffixClick !== undefined && "cursor-pointer"
               }`}
               onClick={suffixClick}

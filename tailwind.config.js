@@ -19,6 +19,7 @@ module.exports = {
         //               |   |   └──────────────────────── Blur radius (softens the shadow)
         //               |   └─────────────────────────────── Y offset (moves shadow 2px down)
         //               └───────────────────────────────────── X offset (no horizontal movement)
+        modal: "0px 7px 14.6px opx rgba(0, 0, 0, 0.15)",
         "input-field-light": "0px 1px 2px 0px rgba(0, 0, 0, 0.3)",
         "dropdown-field-light": "0px 2px 4px 0px rgba(0, 0, 0, 0.15)",
         "dropdown-field": "0px 1px 2px 0px rgba(0, 0, 0, 0.3)",

@@ -1,32 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { PARENT_ROUTES } from "../../../parentRoutes";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
-import { RoleEnum } from "../../../types/generalTypes";
 import useRTL from "../../../utils/languageHelpers";
-import { SERVICE_PROVIDER_ROUTES } from "../../service_provider/routes";
-import CustomButton from "./CustomButton";
-import { useLogout } from "../../../utils/hooks";
-import DetectOutsideClickWrapper from "./DetectOutsideClickWrapper";
+import DropdownSelectOnly from "./DropdownSelectOnly";
+import { ArabicFlagSvg, EnglishFlagSvg } from "../../../utils/svgIcons";
+import { useTranslation } from "react-i18next";
+import { ADMIN_ROUTES } from "../../superAdmin/routes";
+import { useLocation } from "react-router-dom";
+import { PARENT_ROUTES } from "../../../parentRoutes";
+import IconButton from "./IconButton";
+import { setSidebarOpen } from "../../../redux/sidebarSlice";
+import { TiThMenu } from "react-icons/ti";
 
 const Header = () => {
-  const { t } = useTranslation();
-  const {
-    isLoggedIn,
-    accessToken,
-    role,
-    language: lang,
-  } = useSelector((state: RootState) => state.centeralizedStateData.user);
+  const { language: lang } = useSelector(
+    (state: RootState) => state.centeralizedStateData.user
+  );
 
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isExpanded, setExpanded] = useState(false);
-  const navigate = useNavigate();
-  const logout = useLogout();
   const { handleLangChange } = useRTL();
-
+  const { t } = useTranslation();
   const handleClickOutside = (event: MouseEvent) => {
     if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
       setIsMenuOpen(false);
@@ -42,88 +36,108 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen]);
+  const sidebarItems = useMemo(
+    () => [
+      {
+        link: ADMIN_ROUTES.dashboard,
+        headerTitle: "dashboard",
+        headerDescription: "youCanVewYourStatisticsHere",
+      },
+      {
+        link: ADMIN_ROUTES.pendingApprovals,
+        headerTitle: "serviceProviders",
+        headerDescription: "youCanViewAllServiceProvidersHere",
+      },
+      {
+        link: ADMIN_ROUTES.subAdmins,
+        headerTitle: "serviceProviders",
+        headerDescription: "youCanVewAndAddSubAdminsHere",
+      },
+      {
+        link: ADMIN_ROUTES.approveVouchers,
+        headerTitle: "approveVouchers",
+        headerDescription: "youCanApproveVouchersHere",
+      },
+      {
+        link: ADMIN_ROUTES.notifications,
+        headerTitle: "notifications",
+        headerDescription: "youCanViewNotificationsHere",
+      },
+      {
+        link: ADMIN_ROUTES.helpCenter,
+        headerTitle: "helpCenter",
+        headerDescription: "youCanContactHelpCenterFromHere",
+      },
+      {
+        link: PARENT_ROUTES.superAdmin,
+        headerTitle: "profile",
+        headerDescription: "youCanVewYourProfileHere",
+      },
+    ],
+    []
+  );
+  const location = useLocation();
+  const getTitleDescription = useCallback(() => {
+    const text = sidebarItems.find((item) => {
+      console.log("item = ", item);
+      return location.pathname.includes(item.link);
+    });
 
+    return {
+      headerTitle: text?.headerTitle ?? "why",
+      headerDescription: text?.headerDescription ?? "what",
+    };
+  }, [location.pathname, sidebarItems]);
+  const dispatch = useDispatch();
+  const isSidebarOpen = useSelector(
+    (state: RootState) => state.centeralizedStateData.sidebar.isSidebarOpen
+  );
   return (
     <header
-      className={`sticky z-50 h-16 flex justify-between border-b-primary-color border-b-[1px] ${
-        window.location.pathname === "/service-provider/portal/login"
-          ? "items-center pl-5"
-          : `bg-primary-color items-center top-0 left-0 right-0 px-5 animate-dropdown duration-150 transition-all`
-      }`}
+      className={`sticky z-50 h-40 flex justify-between border-b-primary-color border-b-[1px] bg-primary-color items-center top-0 left-0 right-0 px-5 animate-dropdown duration-150 transition-all `}
     >
-      <div className="flex items-center justify-end">
-        {/* Desktop Nav Items start */}
-        {isLoggedIn && accessToken && role === RoleEnum.SERVICE_PROVIDER && (
-          <div className="flex max-md:justify-end sm:justify-end lg:justify-between items-center md:w-[calc(100vw-200px)]">
-            {/*First half of nav start  */}
-            <div className="lg:flex hidden h-full">{/*getNavItems()*/}</div>
-            {/*First half of nav end  */}
-
-            {/*Second half of nav start  */}
-            <div className="flex justify-start items-center">
-              <div className="hidden" onClick={() => handleLangChange()}>
-                <div onClick={handleLangChange}>
-                  {lang === "en" ? (
-                    <div>
-                      <button className="bg-white text-text-black hover:font-semibold">
-                        AR
-                      </button>
-                    </div>
-                  ) : (
-                    <div>
-                      <button className="bg-white text-text-black hover:font-semibold">
-                        EN
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="lg:flex hidden gap-x-4 mr-4">
-                <DetectOutsideClickWrapper onClick={() => setExpanded(false)}>
-                  <div className="relative flex items-center gap-x-2">
-                    {
-                      <div
-                        className={`${
-                          isExpanded ? "scale-100 origin-top" : "scale-0"
-                        } absolute top-16 transition-all rounded-lg w-full px-2 py-2 bg-white`}
-                      >
-                        <CustomButton
-                          text={t("profile")}
-                          width="w-full"
-                          onClick={() => {
-                            setExpanded(false);
-                            const parentRoute = PARENT_ROUTES.serviceProvider;
-
-                            navigate(
-                              parentRoute +
-                                "/" +
-                                SERVICE_PROVIDER_ROUTES.profile +
-                                SERVICE_PROVIDER_ROUTES.edit
-                            );
-                          }}
-                          variant="text"
-                          textVariant="gray"
-                        />
-                        <CustomButton
-                          text={t("logout")}
-                          width="w-full"
-                          onClick={() => {
-                            setExpanded(false);
-                            logout();
-                          }}
-                          variant="text"
-                          textVariant="red"
-                        />
-                      </div>
-                    }
-                  </div>
-                </DetectOutsideClickWrapper>
-              </div>
-            </div>
-            {/*Second half of nav end  */}
-          </div>
-        )}
-        {/* Desktop Nav Items end */}
+      <div
+        className={`absolute top-2 max-md:block hidden ${
+          lang === "en" ? "left-2" : "right-2"
+        }`}
+      >
+        <IconButton
+          icon={<TiThMenu color="#FFF" size={25} />}
+          onClick={() => {
+            console.log("isSidebarOpen = ", isSidebarOpen);
+            dispatch(setSidebarOpen({ isSidebarOpen: !isSidebarOpen }));
+          }}
+        />
+      </div>
+      <div className="flex w-full px-4 justify-between items-start">
+        <div className="flex flex-col gap-y-2">
+          <p className="text-white text-start text-3xl font-bold">
+            {t(getTitleDescription().headerTitle)}
+          </p>
+          <p className="text-white text-start text-base font-medium">
+            {t(getTitleDescription().headerDescription)}
+          </p>
+        </div>
+        <DropdownSelectOnly
+          onSelect={() => {
+            handleLangChange();
+          }}
+          selectedLabel={lang === "ar" ? t("arabic") : t("english")}
+          options={[
+            lang === "ar"
+              ? {
+                  label: t("english"),
+                  value: "en",
+                  img: <EnglishFlagSvg />,
+                }
+              : {
+                  label: t("arabic"),
+                  value: "ar",
+                  img: <ArabicFlagSvg />,
+                },
+          ]}
+          img={lang === "ar" ? <ArabicFlagSvg /> : <EnglishFlagSvg />}
+        />
       </div>
     </header>
   );

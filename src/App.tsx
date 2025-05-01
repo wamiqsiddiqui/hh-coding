@@ -15,7 +15,7 @@ import { PARENT_ROUTES } from "./parentRoutes";
 import { updateAccessToken } from "./redux/auth";
 import { RootState } from "./redux/store";
 import { RoleEnum } from "./types/generalTypes";
-import { KEY_NAMES } from "./utils/constants";
+import { KEY_NAMES } from "./utils/cons";
 import { useHandleTokenExpiration } from "./utils/helpers";
 import { useAutoLogout } from "./utils/IdleTimer/useAutoLogout";
 import Toast from "./modules/core/components/Toast";
@@ -23,7 +23,7 @@ import i18n from "./i18n/config";
 
 const queryClient = new QueryClient({});
 
-const ServiceProvider = lazy(() => import("./modules/service_provider/module"));
+const SuperAdmin = lazy(() => import("./modules/superAdmin/module"));
 
 const Loading = () => (
   <div className="w-screen h-[calc(100vh-64px)] flex justify-center items-start mt-60 animate-pulse">
@@ -109,8 +109,8 @@ function App() {
             <Route
               path={PARENT_ROUTES.index}
               element={
-                role === RoleEnum.SERVICE_PROVIDER ? (
-                  <Navigate to={PARENT_ROUTES.serviceProvider} />
+                role === RoleEnum.SUPER_ADMIN ? (
+                  <Navigate to={PARENT_ROUTES.superAdmin} />
                 ) : (
                   <Navigate to={PARENT_ROUTES.login} />
                 )
@@ -129,8 +129,8 @@ function App() {
               element={<PublicRoute Component={ForgotPassword} />}
             />
             <Route
-              path={`${PARENT_ROUTES.serviceProvider}/*`}
-              element={<LoadModule module={<ServiceProvider />} />}
+              path={`${PARENT_ROUTES.superAdmin}/*`}
+              element={<LoadModule module={<SuperAdmin />} />}
             />
             {/* <Route
               path={PARENT_ROUTES.handshake}

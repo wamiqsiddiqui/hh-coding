@@ -11,7 +11,7 @@ import { setToast } from "../redux/toastSlice";
 import { AxiosError } from "axios";
 import { setScroll } from "../redux/scrollSlice";
 import { hasScrolledtoEnd } from "./helpers";
-import { KEY_NAMES } from "./constants";
+import { KEY_NAMES } from "./cons";
 import axiosInstance from "../services/axiosInstance";
 import { setLogout } from "../redux/auth";
 import { PARENT_ROUTES } from "../parentRoutes";

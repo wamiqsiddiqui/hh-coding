@@ -7,7 +7,7 @@ import { PARENT_ROUTES } from "../parentRoutes";
 import { setLogin, setLogout, updateAccessToken } from "../redux/auth";
 import { store } from "../redux/store";
 import { ErrorMessageIncludesType, jwtPayload } from "../types/generalTypes";
-import { KEY_NAMES, MONTH_NAMES } from "./constants";
+import { KEY_NAMES, MONTH_NAMES } from "./cons";
 import { isValidTimestamp } from "./validations";
 import { jwtDecode } from "jwt-decode";
 

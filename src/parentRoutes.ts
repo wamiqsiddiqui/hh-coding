@@ -1,7 +1,7 @@
 export enum PARENT_ROUTES {
   all = "*",
   index = "/",
-  serviceProvider = "/service-provider",
+  superAdmin = "/super-admin",
   signup = "/signup",
   login = "/login",
   forgotPassword = "/forgotPassword",

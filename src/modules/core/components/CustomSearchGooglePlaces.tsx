@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import CustomInputField from "./CustomInputField";
 import { FormikTouched, useFormikContext } from "formik";
 import { RiDeleteBin6Line } from "../../../utils/icons";
-import { GOOGLE_PLACES_LIBRARIES } from "../../../utils/constants";
+import { GOOGLE_PLACES_LIBRARIES } from "../../../utils/cons";
 import IconButton from "./IconButton";
 import { LocationSvgs } from "../../../utils/svgIcons";
 import { SignupFieldNames, SignupFormType } from "../../../types/signupTypes";

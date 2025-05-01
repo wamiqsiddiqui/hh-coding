@@ -5,6 +5,7 @@ import authSlice from "../redux/auth";
 import accessTokenSlice from "./auth";
 import toastSlice from "./toastSlice";
 import scrollSlice from "./scrollSlice";
+import sidebarSlice from "./sidebarSlice";
 const persistConfig = {
   key: "root",
   storage,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   toast: toastSlice,
   accessToken: accessTokenSlice,
   scroll: scrollSlice,
+  sidebar: sidebarSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

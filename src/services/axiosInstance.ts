@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { PARENT_ROUTES } from "../parentRoutes";
-import { KEY_NAMES } from "../utils/constants";
+import { KEY_NAMES } from "../utils/cons";
 
 interface ResponseType<T> extends AxiosResponse {
   data: T;
@@ -9,7 +9,7 @@ interface ResponseType<T> extends AxiosResponse {
 }
 const getReturnResponse = <T>(response: AxiosResponse<any, any>) => {
   const customResponse: ResponseType<T> = {
-    data: response.data,
+    data: response.data.data,
     status: response.status,
     statusText: response.statusText,
     config: response.config,
@@ -19,7 +19,7 @@ const getReturnResponse = <T>(response: AxiosResponse<any, any>) => {
 };
 export const APP_BASE_URL = process.env.REACT_APP_APP_BASE_URL;
 // export const API_BASE_URL = "http://localhost:8080";
-export const BASE_PATH = "/service-provider/portal";
+export const BASE_PATH = "/admin/portal";
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL, //"http://34.207.150.6:8080/api/v1",
   timeout: 10000,

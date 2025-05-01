@@ -46,12 +46,21 @@ export type ImageExtensionType =
   | ".docx"
   | undefined;
 
-export type GetListingResponse<T, TCounts = undefined> = {
+export type ListingRequestCommonProps = {
+  pageNumber: number;
+  searchBy?: string | null;
+  searchText?: string;
+  customParamKey?: string;
+  customParamValue?: string;
+  sortData?: SortType | null;
+};
+export type GetListingResponse<T> = {
   rows: T;
-  total: number;
-  size: number;
-  page: number;
-  counts?: TCounts;
+  pagination: {
+    totalCount: number;
+    totalPages: number;
+    currentPage: number;
+  };
 };
 
 export type SortType = {
@@ -73,7 +82,7 @@ export type MediaType = {
 };
 
 export enum RoleEnum {
-  SERVICE_PROVIDER = "SERVICE_PROVIDER",
+  SUPER_ADMIN = "SUPER_ADMIN",
 }
 export type DropdownType = { id: string; name: string };
 export type MultiSelectDropdownType = { id: string; name: string }[];
@@ -129,6 +138,8 @@ export type GeneralModalType = ButtonFunctionType & {
 
 export type CancelConfirmationModalType = ButtonFunctionType & {
   text?: string;
+  alternateImageSrc?: string;
+  description?: string;
   proceedButtonText?: string;
   proceedButtonColor?: "green" | "red";
   confirmDisabled?: boolean;
