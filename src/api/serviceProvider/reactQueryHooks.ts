@@ -5,13 +5,22 @@ import {
   postApproveServiceProvider,
 } from "./requests";
 import { ListingRequestCommonProps } from "../../types/generalTypes";
+import {
+  AccountApprovalStatusType,
+  isApprovedType,
+} from "../../types/serviceProviderTypes";
 
 export const useGetUnapprovedServiceProviders = ({
   pageNumber,
   searchBy,
   searchText,
   sortData,
-}: ListingRequestCommonProps) => {
+  isApproved,
+  accountApprovalStatus,
+}: ListingRequestCommonProps & {
+  isApproved: isApprovedType;
+  accountApprovalStatus: AccountApprovalStatusType;
+}) => {
   return useQuery({
     queryKey: [
       GET_ROUTES.getUnapprovedServiceProviders,
@@ -19,6 +28,8 @@ export const useGetUnapprovedServiceProviders = ({
       searchText,
       sortData?.field,
       sortData?.order,
+      isApproved,
+      accountApprovalStatus,
     ],
     queryFn: () =>
       getUnapprovedServiceProviders({
@@ -26,6 +37,8 @@ export const useGetUnapprovedServiceProviders = ({
         searchBy,
         searchText,
         sortData,
+        isApproved,
+        accountApprovalStatus,
       }),
   });
 };

@@ -1,5 +1,7 @@
 import { CSSProperties } from "react";
 import { PaddingType } from "../../../types/generalTypes";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 /**
  * A TabParent component that renders its children and applies a CSS transform
@@ -54,8 +56,11 @@ export const TabParent = ({
    * tab component.
    * @returns {string} translateX CSS property value
    */
+  const { language: lang } = useSelector(
+    (state: RootState) => state.centeralizedStateData.user
+  );
   const getTranslateX = () => {
-    return `-${selectedSection}00%`;
+    return lang === "en" ? `-${selectedSection}00%` : `${selectedSection}00%`;
   };
   // if activeStep is equal to index, then remove hidden property from the next tab parent
   const divStyle: React.CSSProperties = {

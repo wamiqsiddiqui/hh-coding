@@ -145,8 +145,6 @@ const Signup = () => {
                 values.businessLicenseDoc
               ) {
                 handleSubmit();
-              } else {
-                console.log("err", errors);
               }
               event.preventDefault();
             }}

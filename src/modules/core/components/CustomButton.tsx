@@ -20,7 +20,8 @@ type CustomButtonProps = {
     | "font-thin"
     | "font-semibold"
     | "font-medium"
-    | "font-normal";
+    | "font-normal"
+    | "font-bold";
   fontSize?: "medium" | "large" | "small" | "extraLarge";
   textLeftPadding?:
     | "pl-2"

@@ -61,18 +61,18 @@ const Datagrid = ({
   const loadingRows = new Array(10).fill(columns.length);
   return (
     <div
-      className={`w-full ${!noTableRadius && "rounded-md"} ${
-        !noTablePadding && "p-2"
+      className={`w-full bg-white ${!noTableRadius && "rounded-md"} ${
+        noTablePadding && "p-2"
       } ${!noTableShadow && "shadow-datagrid"} h-fit overflow-x-auto`}
     >
-      <table className="w-full">
+      <table className="w-full bg-white">
         <thead className={`${hasHeaderShadow && "shadow-datagrid"}`}>
           <tr
             className={`${
               !noBorder &&
               `${
                 borderBottomColor ?? "border-b-grayShades-datagrid-border"
-              } border-b-2`
+              } border-b-[1px]`
             }`}
           >
             {columns.map((column, index) => (
@@ -88,7 +88,7 @@ const Datagrid = ({
                           : SortOrder.Ascending,
                     });
                 }}
-                className={`${
+                className={`bg-white ${
                   index === 0
                     ? `pl-4 ${!column.columnsSpan && "text-start"}`
                     : "px-4"
@@ -97,7 +97,7 @@ const Datagrid = ({
                     ? "text-transparent"
                     : "text-column-header-text"
                 } py-3 ${column.textStart && "text-start"} ${
-                  column.columnsSpan && "px-4 bg-custom-light-green"
+                  column.columnsSpan && "px-4 bg-white"
                 } ${column.bgColor ? column.bgColor : "bg-transparent"} ${
                   column.maxWidth
                     ? ` max-w-10 max-md:max-w-[20%]`
@@ -121,7 +121,9 @@ const Datagrid = ({
                 >
                   <p
                     className={`w-full ${
-                      column.textColor ? column.textColor : "text-text-black"
+                      column.textColor
+                        ? column.textColor
+                        : "text-hhGrayShades-tabHeader"
                     }`}
                   >
                     {column.name}
@@ -163,8 +165,8 @@ const Datagrid = ({
                     } ${
                       rowIndex !== rows.length - 1 &&
                       !noBorder &&
-                      "border-b-grayShades-datagrid-border border-b-2"
-                    }`}
+                      "border-b-hhGrayShades-datagridBorder border-b-[1px]"
+                    } bg-white`}
                     onClick={() => onRowClick && onRowClick(rowIndex)}
                   >
                     {Object.values(row).map((rowData, keyIndex) => {

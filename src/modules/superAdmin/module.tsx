@@ -4,6 +4,7 @@ import ServiceProviderLayout from "./components/layout/AdminLayout";
 import ProtectedRoute from "../core/components/routeWrappers/ProtectedRoute";
 import ComingSoon from "../core/components/ComingSoon";
 import PendingApprovalsPage from "./pages/pendingApprovals";
+import ViewPendingApprovalsPage from "./pages/viewPendingApprovals";
 
 const ServiceProvider = () => {
   return (
@@ -17,6 +18,10 @@ const ServiceProvider = () => {
         <Route
           path={ADMIN_ROUTES.pendingApprovals}
           element={<ProtectedRoute Component={PendingApprovalsPage} />}
+        />
+        <Route
+          path={ADMIN_ROUTES.pendingApprovals + "/" + ADMIN_ROUTES.view}
+          element={<ProtectedRoute Component={ViewPendingApprovalsPage} />}
         />
       </Routes>
     </ServiceProviderLayout>

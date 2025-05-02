@@ -1,7 +1,7 @@
-import UnapprovedServiceProviderListing from "../../components/pendingApprovals/ui/UnapprovedServiceProviderListing";
+import ServiceProviderListingLayout from "../../components/pendingApprovals/ui/listing/ServiceProviderListingLayout";
 
 const PendingApprovalsPage = () => {
-  return <UnapprovedServiceProviderListing />;
+  return <ServiceProviderListingLayout />;
 };
 
 export default PendingApprovalsPage;

@@ -82,6 +82,7 @@ module.exports = {
           borderGray: "#D9D9D9",
           tabHeader: "#6F6F6F",
           label: "#7A7A7A",
+          datagridBorder: "#E7E7E7",
         },
         grayShades: {
           borderGray: "#92929D",

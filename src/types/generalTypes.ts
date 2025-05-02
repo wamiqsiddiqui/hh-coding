@@ -51,7 +51,9 @@ export type ListingRequestCommonProps = {
   searchBy?: string | null;
   searchText?: string;
   customParamKey?: string;
+  secondaryCustomParamKey?: string;
   customParamValue?: string;
+  secondaryCustomParamValue?: string;
   sortData?: SortType | null;
 };
 export type GetListingResponse<T> = {

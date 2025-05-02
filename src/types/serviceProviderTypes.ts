@@ -1,5 +1,8 @@
 import { RoleEnum } from "./generalTypes";
 
+export type AccountApprovalStatusType = "APPROVED" | "PENDING" | "REJECTED";
+export type ServiceProviderListingType = "REGISTERED" | "PENDING" | "REJECTED";
+export type isApprovedType = "true" | "false";
 export type GetServiceProviderListingResponseType =
   GetServiceProviderResponseType[];
 export type GetServiceProviderResponseType = {
@@ -14,7 +17,23 @@ export type GetServiceProviderResponseType = {
   emailAddress: string;
   phoneNo: string;
   role: RoleEnum;
-  profileImage: string | null;
+  accountApprovalStatus: ServiceProviderListingType;
+  profileImage:
+    | {
+        _id: string;
+        fileName: string;
+        fileType: "image/png";
+        fileSize: number;
+        fileUrl: string; //"https://happyhourbucket21.s3.amazonaws.com/profile-images/491bf5ec-6ef3-43da-a4cb-16dc4a025ae7.png";
+        fileKey: string;
+        uploadedBy: string;
+        uploadedAt: string;
+        createdAt: string;
+        updatedAt: string;
+        __v: number;
+      }
+    | string
+    | null;
   isActive: boolean;
   fcmToken: string;
   businessNameEn: string;
@@ -53,5 +72,5 @@ export type GetServiceProviderResponseType = {
     createdAt: string;
     updatedAt: string;
     __v: number;
-  };
+  } | null;
 };

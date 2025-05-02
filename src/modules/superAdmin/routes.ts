@@ -4,7 +4,7 @@ export const ADMIN_ROUTES = {
   notFound: "/notFound",
 
   create: "create",
-  view: "view/",
+  view: "view",
   edit: "edit/",
   add: "add",
 

@@ -79,7 +79,6 @@ const Header = () => {
   const location = useLocation();
   const getTitleDescription = useCallback(() => {
     const text = sidebarItems.find((item) => {
-      console.log("item = ", item);
       return location.pathname.includes(item.link);
     });
 
@@ -104,7 +103,6 @@ const Header = () => {
         <IconButton
           icon={<TiThMenu color="#FFF" size={25} />}
           onClick={() => {
-            console.log("isSidebarOpen = ", isSidebarOpen);
             dispatch(setSidebarOpen({ isSidebarOpen: !isSidebarOpen }));
           }}
         />

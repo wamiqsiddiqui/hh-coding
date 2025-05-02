@@ -6,6 +6,8 @@ export const getListingParams = ({
   searchText,
   customParamKey,
   customParamValue,
+  secondaryCustomParamKey,
+  secondaryCustomParamValue,
 }: // sortData,
 ListingRequestCommonProps) => {
   return {
@@ -15,6 +17,7 @@ ListingRequestCommonProps) => {
             page: pageNumber ?? 1,
             limit: PAGE_LIMIT,
             [customParamKey as string]: customParamValue,
+            [secondaryCustomParamKey as string]: secondaryCustomParamValue,
             [searchBy]:
               searchBy === "createdAt" ? { from: searchText } : searchText,
             // businessCategory: "SALON",
@@ -24,6 +27,7 @@ ListingRequestCommonProps) => {
             page: pageNumber ?? 1,
             limit: PAGE_LIMIT,
             [customParamKey as string]: customParamValue,
+            [secondaryCustomParamKey as string]: secondaryCustomParamValue,
             // businessCategory: "SALON",
             // sort: { [sortData?.field ?? ""]: sortData?.order },
           },

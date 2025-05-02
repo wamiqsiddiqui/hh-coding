@@ -66,7 +66,6 @@ export default function LoginPage() {
           password: values.password,
         }
       );
-      console.log("response = ", response);
       setLoading(false);
       const accessToken = response.data.authToken;
       const decodedAuthToken = jwtDecode<jwtPayload>(accessToken);

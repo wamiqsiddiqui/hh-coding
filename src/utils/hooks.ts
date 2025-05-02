@@ -15,6 +15,7 @@ import { KEY_NAMES } from "./cons";
 import axiosInstance from "../services/axiosInstance";
 import { setLogout } from "../redux/auth";
 import { PARENT_ROUTES } from "../parentRoutes";
+import { useTranslation } from "react-i18next";
 
 export const useLogout = () => {
   const navigate = useNavigate();
@@ -64,17 +65,18 @@ export const useSuccessError = ({
   successFunction?: () => void;
 }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   useEffect(() => {
     if (isSuccess) {
       dispatch(
         setToast({
-          text: successMessage,
+          text: t(successMessage),
           variant: "success",
         })
       );
       successFunction && successFunction();
     }
-  }, [isSuccess, dispatch, successMessage, successFunction]);
+  }, [isSuccess, dispatch, successMessage, successFunction, t]);
   useEffect(() => {
     if (isError) {
       dispatch(

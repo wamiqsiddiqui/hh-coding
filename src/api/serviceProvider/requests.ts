@@ -3,7 +3,11 @@ import {
   GetListingResponse,
   ListingRequestCommonProps,
 } from "../../types/generalTypes";
-import { GetServiceProviderListingResponseType } from "../../types/serviceProviderTypes";
+import {
+  AccountApprovalStatusType,
+  GetServiceProviderListingResponseType,
+  isApprovedType,
+} from "../../types/serviceProviderTypes";
 import { getListingParams } from "../../utils/apiHelpers";
 import { GET_ROUTES, POST_ROUTES } from "./routes";
 
@@ -12,7 +16,12 @@ export const getUnapprovedServiceProviders = async ({
   searchBy,
   searchText,
   sortData,
-}: ListingRequestCommonProps) => {
+  accountApprovalStatus,
+  isApproved,
+}: ListingRequestCommonProps & {
+  isApproved: isApprovedType;
+  accountApprovalStatus: AccountApprovalStatusType;
+}) => {
   return await axiosInstance.get<
     GetListingResponse<GetServiceProviderListingResponseType>
   >(
@@ -23,7 +32,9 @@ export const getUnapprovedServiceProviders = async ({
       searchText,
       sortData,
       customParamKey: "isApproved",
-      customParamValue: "false",
+      customParamValue: isApproved,
+      secondaryCustomParamKey: "accountApprovalStatus",
+      secondaryCustomParamValue: accountApprovalStatus,
     })
   );
 };
