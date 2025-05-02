@@ -4,7 +4,7 @@ import {
   usePostApproveServiceProvider,
 } from "../../../../../api/serviceProvider/reactQueryHooks";
 import { SortOrder, SortType } from "../../../../../types/generalTypes";
-import { useSuccessError } from "../../../../../utils/hooks";
+// import { useSuccessError } from "../../../../../utils/hooks";
 import {
   GetServiceProviderResponseType,
   ServiceProviderListingType,
@@ -21,21 +21,26 @@ export const useApproveOrRejectServiceProvider = (
   const [status, setStatus] = useState<"Approve" | "Reject" | null>();
   const {
     mutate: approveOrRejectServiceProvider,
-    error,
-    isError,
+    // error,
+    // isError,
     isSuccess,
     isPending,
   } = usePostApproveServiceProvider();
-  useSuccessError({
-    error: error,
-    isError: isError,
-    isSuccess: isSuccess,
-    successMessage:
-      status === "Approve"
-        ? "serviceProviderHasBeenApproved"
-        : "serviceProviderHasBeenRejected",
-    successFunction: successFunction,
-  });
+  // useSuccessError({
+  //   error: error,
+  //   isError: isError,
+  //   isSuccess: isSuccess,
+  //   successMessage:
+  //     status === "Approve"
+  //       ? "serviceProviderHasBeenApproved"
+  //       : "serviceProviderHasBeenRejected",
+  //   successFunction: successFunction,
+  // });
+  useEffect(() => {
+    if (isSuccess) {
+      successFunction && successFunction();
+    }
+  }, [isSuccess, successFunction]);
   return {
     approveOrRejectServiceProvider,
     isPending,
@@ -83,9 +88,8 @@ export const usePendingApprovedRejectedServiceProviderListing = ({
   useEffect(() => {
     if (serviceProviderDetails !== null) {
       navigate(ADMIN_ROUTES.view, { state: serviceProviderDetails });
-      setServiceProviderDetails(null);
     }
-  }, [navigate, serviceProviderDetails, setServiceProviderDetails]);
+  }, [navigate, serviceProviderDetails]);
   return {
     t,
     serviceProviders,

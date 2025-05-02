@@ -24,12 +24,10 @@ export const useGetUnapprovedServiceProviders = ({
   return useQuery({
     queryKey: [
       GET_ROUTES.getUnapprovedServiceProviders,
+      accountApprovalStatus,
+      isApproved,
       pageNumber,
       searchText,
-      sortData?.field,
-      sortData?.order,
-      isApproved,
-      accountApprovalStatus,
     ],
     queryFn: () =>
       getUnapprovedServiceProviders({
@@ -60,7 +58,11 @@ export const usePostApproveServiceProvider = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [GET_ROUTES.getUnapprovedServiceProviders],
+        queryKey: [
+          GET_ROUTES.getUnapprovedServiceProviders,
+          "PENDING",
+          "false",
+        ],
       });
     },
   });

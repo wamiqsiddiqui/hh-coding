@@ -11,7 +11,6 @@ import {
   VisibilitySvg,
 } from "../../../../../../utils/svgIcons";
 import { PAGE_LIMIT } from "../../../../../../utils/apiHelpers";
-import Loader from "../../../../../core/components/Loader";
 import CustomInputField from "../../../../../core/components/CustomInputField";
 import { Dispatch, SetStateAction } from "react";
 
@@ -23,12 +22,10 @@ type PendingServiceProviderListingProps = {
     } | null>
   >;
   setApproveConfirmModalOpen: Dispatch<SetStateAction<boolean>>;
-  isPending: boolean;
 };
 const PendingServiceProviderListing = ({
   setSelectedRow,
   setApproveConfirmModalOpen,
-  isPending,
 }: PendingServiceProviderListingProps) => {
   const {
     serviceProviders,
@@ -45,7 +42,6 @@ const PendingServiceProviderListing = ({
   const { t } = useTranslation();
   return (
     <div className="flex flex-col px-1">
-      {isPending && <Loader />}
       <div className="w-full flex justify-end">
         <CustomInputField
           placeholder={t("search")}

@@ -9,8 +9,9 @@ import { CustomModalVSecondary } from "../../../../../core/components/CustomModa
 import CancelConfirmationModal from "../../../../../core/components/CancelConfirmationModal";
 import {
   useApproveOrRejectServiceProvider,
-  usePendingApprovedRejectedServiceProviderListing,
+  // usePendingApprovedRejectedServiceProviderListing,
 } from "../../logic/hooks";
+import Loader from "../../../../../core/components/Loader";
 
 const ServiceProviderListingLayout = () => {
   const { t } = useTranslation();
@@ -23,20 +24,21 @@ const ServiceProviderListingLayout = () => {
     id: string;
     status: "Approve" | "Reject";
   } | null>(null);
-  const { refetchServiceProviders } =
-    usePendingApprovedRejectedServiceProviderListing({
-      hookListingType: "PENDING",
-    });
+  // const { refetchServiceProviders } =
+  //   usePendingApprovedRejectedServiceProviderListing({
+  //     hookListingType: "PENDING",
+  //   });
   const {
     approveOrRejectServiceProvider,
     isPending,
     isApproveConfirmModalOpen,
     setApproveConfirmModalOpen,
   } = useApproveOrRejectServiceProvider(() => {
-    refetchServiceProviders();
+    // refetchServiceProviders();
   });
   return (
     <div>
+      {isPending && <Loader />}
       <div className="flex w-full justify-center gap-x-8 mb-4">
         <TabHeader
           headerText={t("registeredALL_CAPS")}
@@ -77,7 +79,6 @@ const ServiceProviderListingLayout = () => {
           customCSS={customCSS}
         >
           <PendingServiceProviderListing
-            isPending={isPending}
             setSelectedRow={setSelectedRow}
             setApproveConfirmModalOpen={setApproveConfirmModalOpen}
           />
