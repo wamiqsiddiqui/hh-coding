@@ -5,27 +5,31 @@ type ClickOutsideProps = {
   disallowOutsideClick?: boolean;
   onClick: () => void;
   className?: string;
+  toggleButtonRef?: RefObject<HTMLDivElement | null>;
 };
 export default function DetectOutsideClickWrapper({
   children,
   disallowOutsideClick,
   onClick,
+  toggleButtonRef,
   className,
 }: ClickOutsideProps) {
   const wrapperRef: RefObject<HTMLDivElement | null> =
     useRef<HTMLDivElement>(null);
-
   const handleClickListener = useCallback(
     (event: MouseEvent) => {
-      let isClickedInside;
-      isClickedInside =
-        wrapperRef &&
-        wrapperRef.current &&
-        wrapperRef.current.contains(event.target as Node);
+      const clickedNode = event.target as Node;
+
+      const isInsideWrapper =
+        wrapperRef?.current?.contains(clickedNode) ?? false;
+
+      const isInsideToggleButton =
+        toggleButtonRef?.current?.contains(clickedNode) ?? false;
+      const isClickedInside = isInsideWrapper || isInsideToggleButton;
       if (isClickedInside) return;
-      else if (!disallowOutsideClick) onClick();
+      if (!disallowOutsideClick) onClick();
     },
-    [onClick, disallowOutsideClick]
+    [onClick, disallowOutsideClick, toggleButtonRef]
   );
 
   useEffect(() => {

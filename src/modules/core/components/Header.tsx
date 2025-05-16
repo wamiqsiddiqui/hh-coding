@@ -1,5 +1,14 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import useRTL from "../../../utils/languageHelpers";
 import DropdownSelectOnly from "./DropdownSelectOnly";
@@ -9,10 +18,18 @@ import { ADMIN_ROUTES } from "../../superAdmin/routes";
 import { useLocation } from "react-router-dom";
 import { PARENT_ROUTES } from "../../../parentRoutes";
 import IconButton from "./IconButton";
-import { setSidebarOpen } from "../../../redux/sidebarSlice";
+// import { setSidebarOpen } from "../../../redux/sidebarSlice";
 import { TiThMenu } from "react-icons/ti";
 
-const Header = () => {
+const Header = ({
+  setSidebarOpen,
+  isSidebarOpen,
+  toggleButtonRef,
+}: {
+  toggleButtonRef: RefObject<HTMLDivElement | null>;
+  isSidebarOpen: boolean;
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { language: lang } = useSelector(
     (state: RootState) => state.centeralizedStateData.user
   );
@@ -87,10 +104,7 @@ const Header = () => {
       headerDescription: text?.headerDescription ?? "what",
     };
   }, [location.pathname, sidebarItems]);
-  const dispatch = useDispatch();
-  const isSidebarOpen = useSelector(
-    (state: RootState) => state.centeralizedStateData.sidebar.isSidebarOpen
-  );
+
   return (
     <header
       className={`sticky z-50 h-40 flex justify-between border-b-primary-color border-b-[1px] bg-primary-color items-center top-0 left-0 right-0 px-5 animate-dropdown duration-150 transition-all `}
@@ -101,9 +115,10 @@ const Header = () => {
         }`}
       >
         <IconButton
+          toggleButtonRef={toggleButtonRef}
           icon={<TiThMenu color="#FFF" size={25} />}
           onClick={() => {
-            dispatch(setSidebarOpen({ isSidebarOpen: !isSidebarOpen }));
+            setSidebarOpen(!isSidebarOpen);
           }}
         />
       </div>

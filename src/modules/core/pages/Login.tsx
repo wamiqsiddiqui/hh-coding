@@ -138,7 +138,7 @@ export default function LoginPage() {
         <SubHeader noPadding noLogo />
         <div className="w-full flex items-center gap-y-4 flex-col justify-center">
           <HappyHourLogoSvg width="157.59" height="76.57" />
-          <CustomChip text={t("serviceProvider")} />
+          <CustomChip text={t("adminDashboard")} />
         </div>
         <p className="text-4xl font-bold text-center mt-4">{t("SignIn")}</p>
         <p className="text-lg font-normal text-center text-hhGrayShades-textGray mb-8 mt-1">
@@ -157,7 +157,7 @@ export default function LoginPage() {
               }}
               className="flex flex-col w-full"
             >
-              <div className="flex flex-col w-full gap-y-3">
+              <div className="flex flex-col w-full">
                 <EmailField
                   autoFocus
                   fieldName="email"

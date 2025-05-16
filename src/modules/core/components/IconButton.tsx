@@ -1,4 +1,4 @@
-import React, { JSX } from "react";
+import React, { JSX, RefObject } from "react";
 import { CustomToolTipBox } from "./CustomTooltip";
 import { LoaderCircle } from "./Loader";
 
@@ -24,6 +24,7 @@ type IconButtonProps = {
   isLoading?: boolean;
   text?: string;
   textClass?: string;
+  toggleButtonRef?: RefObject<HTMLDivElement | null>;
 };
 const IconButton = ({
   tooltip,
@@ -47,6 +48,7 @@ const IconButton = ({
   disabled,
   text = "",
   textClass,
+  toggleButtonRef,
 }: IconButtonProps) => {
   return isLoading ? (
     <LoaderCircle
@@ -96,6 +98,7 @@ const IconButton = ({
             } h-5 w-5 ${
               !disabled && `cursor-pointer hover:scale-[1.041]`
             } transition-all ${rotate}`,
+            ref: toggleButtonRef,
             onClick: (event: MouseEvent) => {
               event.stopPropagation();
               onClick && !disabled && onClick();

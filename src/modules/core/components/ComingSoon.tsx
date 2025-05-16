@@ -13,7 +13,7 @@ const ComingSoon = () => {
     >
       <div className="w-full flex items-center gap-y-4 mb-4 flex-col justify-center">
         <HappyHourLogoSvg width="157.59" height="76.57" />
-        <CustomChip text={t("serviceProvider")} />
+        <CustomChip text={t("adminDashboard")} />
       </div>
       <h1 className="text-5xl text-primary-color font-bold mb-8 animate-pulse">
         {t("comingSoon")}

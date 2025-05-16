@@ -14,19 +14,24 @@ import { PARENT_ROUTES } from "../../../parentRoutes";
 import { useLogout } from "../../../utils/hooks";
 import { ADMIN_ROUTES } from "../../superAdmin/routes";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import DetectOutsideClickWrapper from "./DetectOutsideClickWrapper";
-import { setSidebarOpen } from "../../../redux/sidebarSlice";
+import { Dispatch, RefObject, SetStateAction } from "react";
 
-const Sidebar = () => {
+const Sidebar = ({
+  setSidebarOpen,
+  isSidebarOpen,
+  toggleButtonRef,
+}: {
+  toggleButtonRef: RefObject<HTMLDivElement | null>;
+  isSidebarOpen: boolean;
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const language = useSelector(
     (state: RootState) => state.centeralizedStateData.user.language
-  );
-  const isSidebarOpen = useSelector(
-    (state: RootState) => state.centeralizedStateData.sidebar.isSidebarOpen
   );
 
   const items = [
@@ -67,12 +72,10 @@ const Sidebar = () => {
     },
   ];
   const logout = useLogout();
-  const dispatch = useDispatch();
   return (
     <DetectOutsideClickWrapper
-      onClick={() => {
-        dispatch(setSidebarOpen({ isSidebarOpen: false }));
-      }}
+      toggleButtonRef={toggleButtonRef}
+      onClick={() => setSidebarOpen(false)}
     >
       <div
         className={`w-72 z-50 ${
@@ -97,7 +100,8 @@ const Sidebar = () => {
                   <div
                     onClick={() => {
                       navigate(item.link);
-                      dispatch(setSidebarOpen({ isSidebarOpen: false }));
+                      setSidebarOpen(false);
+                      // dispatch(setSidebarOpen({ isSidebarOpen: false }));
                     }}
                     className={`flex gap-x-3 group cursor-pointer w-full ${
                       language === "en" ? "pl-8" : "pr-8"
@@ -115,7 +119,8 @@ const Sidebar = () => {
           <div
             onClick={() => {
               logout();
-              dispatch(setSidebarOpen({ isSidebarOpen: false }));
+              setSidebarOpen(false);
+              // dispatch(setSidebarOpen({ isSidebarOpen: false }));
             }}
             className={`flex  max-md:relative gap-x-3 group cursor-pointer w-full ${
               language === "en" ? "pl-8" : "pr-8"
