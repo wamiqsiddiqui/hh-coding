@@ -151,7 +151,7 @@ const CustomButton = ({
                   "bg-transparent hover:bg-badge-green hover:border-primary-color border-2 border-transparent"
                     ? "text-grayShades-customGray hover:text-primary-color"
                     : "text-white"
-                } font-light ${
+                } font-semibold ${
                   fontSize === "small"
                     ? "text-sm"
                     : fontSize === "medium"
