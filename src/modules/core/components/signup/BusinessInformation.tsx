@@ -110,7 +110,11 @@ const BusinessInformation = ({
             fullWidth
             placeholder="5XXXXXXXX"
             prefix={
-              <div className="flex items-center gap-x-1 w-max">
+              <div
+                className={`flex items-center ${
+                  language === "ar" && "mx-2"
+                } gap-x-1 w-max`}
+              >
                 <ArabicFlagSvg />
                 <p className="text-xs text-hhGrayShades-textGray">+966 |</p>
               </div>

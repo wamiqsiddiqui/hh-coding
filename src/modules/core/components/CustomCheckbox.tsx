@@ -60,8 +60,8 @@ const CustomCheckbox = ({
               : size === "large"
               ? "size-5 rounded-[4px]"
               : size === "medium"
-              ? "size-4 rounded-[3px]"
-              : "size-[14px] rounded-[2px]"
+              ? "w-8 h-5 rounded-[3px]"
+              : "w-[18px] h-[14px] rounded-[2px]"
           } hover:border-grayShades-datagrid border-grayShades-borderGray border-[1px] bg-white ${className}`}
           onClick={() => {
             const disabledText = onChange ? onChange(!checked) : null;

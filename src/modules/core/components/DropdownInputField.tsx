@@ -64,7 +64,7 @@ const DropdownInputField = ({
       <div
         className={`${bgColor ? bgColor : `bg-white`} ${
           fullWidth ? "w-full" : width ? width : "w-72"
-        } h-11 border-[1px] border-grayShades-datagrid focus-within:border-black rounded-lg overflow-hidden`}
+        } h-11 border-[1px] shadow-input-field-light border-hhGrayShades-borderGray focus-within:border-black overflow-hidden rounded-lg`}
       >
         <Field
           as="select"

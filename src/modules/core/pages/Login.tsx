@@ -122,9 +122,9 @@ export default function LoginPage() {
     <div
       ref={elementRef}
       className={`flex flex-col h-screen md:overflow-y-auto max-md:overflow-hidden items-center ${
-        height <= 460
+        height <= 700
           ? "justify-start md:py-3"
-          : "justify-center  md:overflow-y-auto  max-md:overflow-hidden"
+          : "justify-center md:overflow-y-auto max-md:overflow-hidden"
       } text-custom-black relative w-full`}
     >
       {isLoading && <Loader />}
@@ -132,8 +132,8 @@ export default function LoginPage() {
         className={`bg-custom-white md:shadow-md portrait:p-12 landscape:px-7 landscape:py-6 landscape:max-md:rounded-none rounded-xl w-full sm:w-[562px] xl:min-w-[310px] ${
           height <= 400
             ? "h-screen md:h-[130vh] max-md:overflow-y-auto"
-            : "h-auto  max-md:h-screen max-md:overflow-hidden"
-        } md:mb-[100px] landscape:max-md:w-full`}
+            : "h-auto max-md:h-screen max-md:overflow-hidden"
+        } landscape:max-md:w-full`}
       >
         <SubHeader noPadding noLogo />
         <div className="w-full flex items-center gap-y-4 flex-col justify-center">
